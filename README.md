@@ -1,4 +1,4 @@
-# calculated-net-editor
+# calculate-net-editor
 
 ## Project setup
 ```
