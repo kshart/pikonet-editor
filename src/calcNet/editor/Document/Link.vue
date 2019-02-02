@@ -39,7 +39,7 @@ export default {
         to: this.id
       })
     },
-    ...mapActions('documentLinks', [
+    ...mapActions('document/links', [
       'mountLinkPoint',
       'dismountLinkPoint',
       'beginCreateLink',

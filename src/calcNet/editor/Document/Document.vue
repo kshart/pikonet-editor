@@ -7,10 +7,11 @@
         :is="nodeConfig.type + 'Shape'"
         :nodeConfig="nodeConfig"
         :style="{
-          transform: `translateX(${nodeConfig.position.x}px) translateY(${nodeConfig.position.y}px)`
+          transform: `translateX(${nodeConfig.view.position.x}px) translateY(${nodeConfig.view.position.y}px)`
         }"
         :ref="'nodeConfig' + nodeConfig.id"
         class="item"
+        @select="documentSelectNodeToConfigure(nodeConfig.id)"
         @startDrag="mouseDown($event, nodeConfig.id)"
         @mousedown.native.left.alt="mouseDown($event, nodeConfig.id)"
       >
@@ -39,7 +40,11 @@ export default {
   },
   data () {
     return {
+      /**
+       * ID ноды для drag&drop
+       */
       selectedNodeConfigId: null,
+
       /**
        * Отступ для drag&drop
        * @member {?Point}
@@ -127,8 +132,8 @@ export default {
           const align = 25
           const x = event.clientX - this.offset.x
           const y = event.clientY - this.offset.y
-          nodeConfig.position.x = Math.round(x / align) * align
-          nodeConfig.position.y = Math.round(y / align) * align
+          nodeConfig.view.position.x = Math.round(x / align) * align
+          nodeConfig.view.position.y = Math.round(y / align) * align
           this.updateBBox()
         }
       })
@@ -142,12 +147,13 @@ export default {
       this.updateBBox()
     },
     ...mapMutations({
-      documentUpdateNodeConfig: 'document/UPDATE_NODE_CONFIG'
+      documentUpdateNodeConfig: 'document/UPDATE_NODE_CONFIG',
+      documentSelectNodeToConfigure: 'document/SELECT_NODE_TO_CONFIGURE'
     })
   },
   watch: {
     'document.nodeConfigs' () {
-      this.updateBBox()
+      this.$nextTick(() => this.updateBBox())
     }
   }
 }

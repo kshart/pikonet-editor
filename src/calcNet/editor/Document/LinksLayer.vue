@@ -33,10 +33,10 @@ export default {
   name: 'LinksLayer',
   props: ['bbox'],
   computed: {
-    ...mapState('documentLinks', {
+    ...mapState('document/links', {
       links: state => state.items
     }),
-    ...mapGetters('documentLinks', ['getLinkPoints'])
+    ...mapGetters('document/links', ['getLinkPoints'])
   },
   mounted () {
     this.updateContext()
@@ -81,7 +81,7 @@ export default {
         drawArrow(this.context, x1, y1, x2, y2)
       }
     },
-    ...mapActions('documentLinks', [
+    ...mapActions('document/links', [
       'mountLink',
       'dismountLink',
       'beginCreateLink',

@@ -13,10 +13,6 @@ export default {
   methods: {
     appendNodeConfig () {
       const nodeConfig = new MultiplicationNode({
-        position: {
-          x: Math.random() * 100,
-          y: Math.random() * 100
-        },
         title: 'MultiplicationNode'
       })
       this.documentAppendNodeConfig(nodeConfig)

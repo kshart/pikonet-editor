@@ -13,10 +13,6 @@ export default {
   methods: {
     appendNodeConfig () {
       const nodeConfig = new StaticValueNode({
-        position: {
-          x: Math.random() * 100,
-          y: Math.random() * 100
-        },
         title: 'StaticValueNode'
       })
       this.documentAppendNodeConfig(nodeConfig)

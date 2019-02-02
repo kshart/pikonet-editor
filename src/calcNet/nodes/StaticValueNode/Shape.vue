@@ -5,7 +5,10 @@
       <br/>
       {{ nodeConfig.title }} - {{ nodeConfig.id }}
     </div>
-    <button class="remove-button" @click="removeNodeConfig()">
+    <button class="button button-update" @click="$emit('select')">
+      <FontAwesomeIcon icon="cogs" :style="{ color: 'white' }" />
+    </button>
+    <button class="button button-remove" @click="removeNodeConfig()">
       <FontAwesomeIcon icon="trash-alt" :style="{ color: 'white' }" />
     </button>
     <div class="shape-body">
@@ -23,8 +26,9 @@ import { mapActions } from 'vuex'
 import Link from '@/calcNet/editor/Document/Link'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { faCogs, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
+library.add(faCogs)
 library.add(faTrashAlt)
 
 /**
@@ -75,9 +79,7 @@ export default {
     border-left: 1px #bbb solid;
   }
 
-  .remove-button {
-    right: 0;
-    top : 0;
+  .button {
     width: 40px;
     height: 40px;
     position: absolute;
@@ -85,7 +87,15 @@ export default {
     border: none;
     font-size: 20px;
   }
-  .remove-button:active {
+  .button:active {
     background: #fff;
+  }
+  .button-remove {
+    right: 0;
+    top : 0;
+  }
+  .button-update {
+    right: 40px;
+    top : 0;
   }
 </style>

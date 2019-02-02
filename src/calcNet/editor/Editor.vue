@@ -9,42 +9,26 @@
       }"
     />
     <div class="prop-manager">
-      {!{ schema }!}
+      {{ nodeIdToConfigure }}
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Workspace from './Workspace'
 import ItemSelector from './ItemSelector/ItemSelector'
-
-/**
- * Точка с координатами `x` и `y`
- * @typedef {Object} Point
- * @property {number} x
- * @property {number} y
- */
-
-/**
- * Точка с координатами `x` и `y`
- * @typedef {Object} calcNet.Node
- * @property {number} type
- * @property {string} server Имя сервера к которому прикреплен
- * @property {Point} position
- * @property {number} title
- */
-
-/**
- * Объект с всеми начстройками ???
- * @typedef {Object} Schema
- * @property {Array.<Schema.Item>} items  - Штуки в объекте.
- */
 
 export default {
   name: 'Editor',
   components: {
     Workspace,
     ItemSelector
+  },
+  computed: {
+    ...mapState('document', {
+      nodeIdToConfigure: state => state.nodeIdToConfigure
+    })
   }
 }
 </script>

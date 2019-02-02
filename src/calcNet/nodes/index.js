@@ -9,11 +9,11 @@ export default {
   StaticValueNode: {
     shape: StaticValueNodeShape,
     menuItem: StaticValueNodeMenuItem,
-    configClass: StaticValueNode
+    class: StaticValueNode
   },
   MultiplicationNode: {
     shape: MultiplicationNodeShape,
     menuItem: MultiplicationNodeMenuItem,
-    configClass: MultiplicationNode
+    class: MultiplicationNode
   }
 }

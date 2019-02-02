@@ -1,6 +1,6 @@
 <template>
   <div class="shape">
-    <div class="shape-head" @mousedown.left="$emit('startDrag', $event)">
+    <div class="shape-head" @click="$emit('select')" @mousedown.left="$emit('startDrag', $event)">
       {{ nodeConfig.type }}
       <br/>
       {{ nodeConfig.title }} - {{ nodeConfig.id }}
