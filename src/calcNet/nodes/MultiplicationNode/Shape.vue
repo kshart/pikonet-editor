@@ -5,15 +5,24 @@
       <br/>
       {{ nodeConfig.title }} - {{ nodeConfig.id }}
     </div>
-    <button class="remove-button" @click="removeNodeConfig()">
+    <button class="button button-update" @click="$emit('select')">
+      <FontAwesomeIcon icon="cogs" :style="{ color: 'white' }" />
+    </button>
+    <button class="button button-remove" @click="removeNodeConfig()">
       <FontAwesomeIcon icon="trash-alt" :style="{ color: 'white' }" />
     </button>
     <div class="shape-body">
+      in1
       <div class="link">
-        <Link :id="nodeConfig.id + '/value1'"/>
+        <Link :id="nodeConfig.id + '/in1'"/>
       </div>
+      in2
       <div class="link">
-        <Link :id="nodeConfig.id + '/value2'"/>
+        <Link :id="nodeConfig.id + '/in2'"/>
+      </div>
+      value
+      <div class="link">
+        <Link :id="nodeConfig.id + '/value'"/>
       </div>
     </div>
   </div>
@@ -76,9 +85,7 @@ export default {
     border-left: 1px #bbb solid;
   }
 
-  .remove-button {
-    right: 0;
-    top : 0;
+  .button {
     width: 40px;
     height: 40px;
     position: absolute;
@@ -86,7 +93,15 @@ export default {
     border: none;
     font-size: 20px;
   }
-  .remove-button:active {
+  .button:active {
     background: #fff;
+  }
+  .button-remove {
+    right: 0;
+    top : 0;
+  }
+  .button-update {
+    right: 40px;
+    top : 0;
   }
 </style>

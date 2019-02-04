@@ -8,14 +8,18 @@
         height: 600
       }"
     />
-    <div class="prop-manager">
-      {{ nodeIdToConfigure }}
-    </div>
+    <component
+      v-if="nodeConfigureComponent"
+      :is="nodeConfigureComponent"
+      :nodeId="nodeIdToConfigure"
+      class="prop-manager"
+    />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import nodes from '@/calcNet/nodes/index'
 import Workspace from './Workspace'
 import ItemSelector from './ItemSelector/ItemSelector'
 
@@ -26,7 +30,19 @@ export default {
     ItemSelector
   },
   computed: {
+    nodeConfigureComponent () {
+      if (!this.nodeIdToConfigure) {
+        return null
+      }
+      const node = this.nodes.find(node => node.id === this.nodeIdToConfigure)
+      const nodeConf = nodes[node.type]
+      if (!nodeConf) {
+        return null
+      }
+      return nodeConf.configPanel
+    },
     ...mapState('document', {
+      nodes: state => state.nodeConfigs,
       nodeIdToConfigure: state => state.nodeIdToConfigure
     })
   }
