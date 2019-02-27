@@ -1,4 +1,4 @@
-# calculate-net-editor
+# Pikonet Editor
 
 ## Project setup
 ```

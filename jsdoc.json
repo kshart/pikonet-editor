@@ -1,0 +1,27 @@
+{
+  "sourceType": "module",
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "source": {
+    "include": ["./src", "./README.md"],
+    "includePattern": "\\.(vue|js)$"
+  },
+  "plugins": [
+    "plugins/markdown",
+    "node_modules/jsdoc-babel",
+    "node_modules/jsdoc-vuejs"
+  ],
+  "opts": {
+    "template": "node_modules/tui-jsdoc-template",
+    "encoding": "utf8",
+    "destination": "docs/",
+    "recurse": true
+  },
+  "templates": {
+    "name": "Pikonet Editor",
+    "footerText": "Pikonet Editor",
+    "cleverLinks": false,
+    "monospaceLinks": false
+  }
+}

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Editor from './calcNet/editor/Editor.vue'
+import Editor from './editor/Editor.vue'
 
 Vue.use(Router)
 

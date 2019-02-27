@@ -1,0 +1,215 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: store/modules/documentLinks.js | Pikonet Editor</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="">
+        
+            <img src="img/toast-ui.png" width="100%" height="100%">
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Pikonet Editor</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-Shape.html">Shape</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:Shape_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Global</h3><ul><li><a href="global.html#offset">offset</a></li><li><a href="global.html#selectedNodeConfigId">selectedNodeConfigId</a></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+const types = {
+  BEGIN_CREATE_LINK: 'BEGIN_CREATE_LINK',
+  END_CREATE_LINK: 'END_CREATE_LINK'
+}
+
+const state = {
+  createLink: {
+    enable: false,
+    from: null,
+    to: null
+  },
+  items: [
+    {
+      from: 'Node2/value',
+      to: 'Node3/value'
+    }, {
+      from: 'Node3/value',
+      to: 'Node4/value'
+    }, {
+      from: 'Node4/value',
+      to: 'Node5/value'
+    }, {
+      from: 'Node5/value',
+      to: 'Node6/value'
+    }
+  ]
+}
+
+const linkPointComponents = new Map()
+
+const actions = {
+  /**
+   * Регистрация vue компонента как линка
+   *
+   * @param {string} id - уникальный ключ соединения
+   * @param {VueComponent} $vue - компонент
+   */
+  mountLinkPoint ({ commit }, { id, $vue }) {
+    linkPointComponents.set(id, $vue)
+  },
+
+  /**
+   * Удалить линк/vue компонент из зарегистированных
+   *
+   * @param {string} id - уникальный ключ соединения
+   * @param {VueComponent} $vue - компонент
+   */
+  dismountLinkPoint ({ commit }, { id, $vue }) {
+    linkPointComponents.delete(id)
+  },
+
+  /**
+   * Начало создания соединения
+   *
+   * @param {ActionContext} [vuexContext]
+   * @param {Object} payload
+   * @param {string} payload.from - начало соединения
+   * @param {string} payload.to - конец соединения
+   */
+  beginCreateLink ({ commit }, { from, to }) {
+    commit(types.BEGIN_CREATE_LINK, { from, to })
+  },
+
+  /**
+   * Обновление параметров создания соединения
+   *
+   * @param {ActionContext} [vuexContext]
+   * @param {Object} payload
+   * @param {string} payload.from - начало соединения
+   * @param {string} payload.to - конец соединения
+   */
+  updateCreateLink ({ commit }, { from, to }) {
+    commit(types.UPDATE_CREATE_LINK, { from, to })
+  },
+
+  /**
+   * Конец создания соединения
+   *
+   * @param {ActionContext} [vuexContext]
+   * @param {Object} payload
+   * @param {string} payload.from - начало соединения
+   * @param {string} payload.to - конец соединения
+   */
+  endCreateLink ({ commit }, { from, to }) {
+    commit(types.END_CREATE_LINK, { from, to })
+  }
+}
+
+const getters = {
+  /**
+   * Массив vue елементов для linkPoint
+   *
+   * @return {Map&lt;VueComponent>} vue компоненты
+   */
+  getLinkPoints: state => {
+    return linkPointComponents
+  }
+}
+
+const mutations = {
+  [types.BEGIN_CREATE_LINK] (state, { from, to }) {
+    state.createLink.enable = true
+    state.createLink.from = from
+  },
+  [types.UPDATE_CREATE_LINK] (state, { from, to }) {
+    state.createLink.enable = false
+    if (from) {
+      state.createLink.from = from
+    }
+    if (to) {
+      state.createLink.to = to
+    }
+  },
+  [types.END_CREATE_LINK] (state, { from, to }) {
+    state.createLink.to = to
+    const oldLink = state.items.find(link => link.from === state.createLink.from &amp;&amp; link.to === state.createLink.to)
+    if (!oldLink) {
+      console.log(state.createLink.from, state.createLink.to)
+      state.items.push({
+        from: state.createLink.from,
+        to: state.createLink.to
+      })
+    }
+    state.createLink.enable = false
+    state.createLink.from = null
+    state.createLink.to = null
+  }
+}
+
+export default {
+  namespaced: true,
+  mutations,
+  getters,
+  actions,
+  state
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="img/toast-ui.png" style="">
+    <div class="footer-text">Pikonet Editor</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>
