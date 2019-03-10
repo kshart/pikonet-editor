@@ -12,10 +12,14 @@ const types = {
   selectItem: 'selectItem',
   setAttributes: 'setAttributes',
   FLUSH_UPDATED_NODES: 'FLUSH_UPDATED_NODES',
-  SELECT_NODE_TO_CONFIGURE: 'SELECT_NODE_TO_CONFIGURE'
+  SELECT_NODE_TO_CONFIGURE: 'SELECT_NODE_TO_CONFIGURE',
+  UPDATE_RETRY_COUNT: 'UPDATE_RETRY_COUNT',
+  UPDATE_CONNECTION_STATE: 'UPDATE_CONNECTION_STATE'
 }
 
 const state = {
+  isConnected: false,
+  loadingRetryCount: 0,
   nodeConfigs: [],
   isUpdateIds: [],
   nodeIdToConfigure: null
@@ -30,15 +34,23 @@ const actions = {
    *
    * @param {object} context
    */
-  init ({ commit }) {
+  init ({ state, commit }) {
     api.open()
     api.addEventListener('open', event => {
+      commit(types.UPDATE_RETRY_COUNT, { loadingRetryCount: 0 })
+      commit(types.UPDATE_CONNECTION_STATE, { isConnected: true })
       api.send('nodeGetList')
     })
     api.addEventListener('close', event => {
-      setTimeout(() => api.open(), 1000)
+      commit(types.UPDATE_CONNECTION_STATE, { isConnected: false })
+    })
+    api.addEventListener('tryConnect', event => {
+      commit(types.UPDATE_RETRY_COUNT, {
+        loadingRetryCount: state.loadingRetryCount + 1
+      })
     })
     api.addEventListener('nodeList', event => {
+      console.log(event.payload.nodes)
       commit(types.INIT_NODE_CONFIGS, event.payload.nodes)
     })
     api.addEventListener('nodeCreated', event => {
@@ -52,7 +64,7 @@ const actions = {
       commit(types.REMOVE_NODE_CONFIG, event.payload.id)
     })
     /* updateTimer = */ setInterval(() => {
-      if (state.isUpdateIds.length > 0) {
+      if (api.connected && state.isUpdateIds.length > 0) {
         const nodes = state.isUpdateIds.map(id => state.nodeConfigs.find(conf => conf.id === id))
         console.log(state.isUpdateIds, nodes)
         api.send('nodeUpdate', { nodes })
@@ -147,6 +159,14 @@ const mutations = {
   },
   [types.SELECT_NODE_TO_CONFIGURE] (state, nodeId) {
     state.nodeIdToConfigure = nodeId
+  },
+
+  [types.UPDATE_RETRY_COUNT] (state, { loadingRetryCount }) {
+    state.loadingRetryCount = loadingRetryCount
+  },
+
+  [types.UPDATE_CONNECTION_STATE] (state, { isConnected }) {
+    state.isConnected = isConnected
   }
 }
 

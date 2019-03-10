@@ -1,6 +1,7 @@
 <template>
   <canvas
-    class="links-layer" :style="{
+    class="links-layer"
+    :style="{
       transform: `translateX(${bbox.x}px) translateY(${bbox.y}px)`
     }"
   >
@@ -32,20 +33,37 @@ function drawArrow (context, x1, y1, x2, y2) {
 export default {
   name: 'LinksLayer',
   props: ['bbox'],
+  data () {
+    return {
+      isCreateArrow: false,
+      mousePosition: {
+        x: null,
+        y: null
+      },
+      arrowColor: '#f00'
+    }
+  },
   computed: {
     ...mapState('document/links', {
-      links: state => state.items
+      links: state => state.items,
+      createLinkConfig: state => state.createLink
     }),
     ...mapGetters('document/links', ['getLinkPoints'])
   },
   mounted () {
     this.updateContext()
     this.updateLines()
+    window.addEventListener('mousemove', this.updateMousePosition)
   },
   beforeDestroy () {
+    window.removeEventListener('mousemove', this.updateMousePosition)
     this.context.clearRect(0, 0, this.$el.width, this.$el.height)
   },
   methods: {
+    updateMousePosition (event) {
+      this.mousePosition.x = event.clientX - this.bbox.offsetX
+      this.mousePosition.y = event.clientY - this.bbox.offsetY
+    },
     updateContext () {
       if (!this.$el) {
         return
@@ -61,24 +79,42 @@ export default {
         return
       }
       this.context.clearRect(0, 0, this.$el.width, this.$el.height)
-      this.context.fillStyle = '#0f0'
-      this.context.strokeStyle = '#0f0'
+      this.context.fillStyle = this.arrowColor
+      this.context.strokeStyle = this.arrowColor
       this.context.lineWidth = 2.5
       this.context.lineCap = 'round'
-
+      const getPointFromLinkName = linkName => {
+        const link = this.getLinkPoints.get(linkName)
+        if (!link) {
+          return null
+        }
+        const bbox = link.$el.getBoundingClientRect()
+        const x = bbox.x + bbox.width / 2 - this.bbox.offsetX
+        const y = bbox.y + bbox.height / 2 - this.bbox.offsetY
+        return { x, y }
+      }
       for (let link of this.links) {
-        const from = this.getLinkPoints.get(link.from)
-        const to = this.getLinkPoints.get(link.to)
-        if (!from || !to) {
+        const fromPoint = getPointFromLinkName(link.from)
+        const toPoint = getPointFromLinkName(link.to)
+        if (!fromPoint || !toPoint) {
           continue
         }
-        const fromBBox = from.$el.getBoundingClientRect()
-        const toBBox = to.$el.getBoundingClientRect()
-        const x1 = fromBBox.x + fromBBox.width / 2 - this.bbox.offsetX
-        const y1 = fromBBox.y + fromBBox.height / 2 - this.bbox.offsetY
-        const x2 = toBBox.x + toBBox.width / 2 - this.bbox.offsetX
-        const y2 = toBBox.y + toBBox.height / 2 - this.bbox.offsetY
-        drawArrow(this.context, x1, y1, x2, y2)
+        drawArrow(this.context, fromPoint.x, fromPoint.y, toPoint.x, toPoint.y)
+      }
+      if (this.createLinkConfig.enabled && this.createLinkConfig.from) {
+        const fromPoint = getPointFromLinkName(this.createLinkConfig.from)
+        drawArrow(this.context, fromPoint.x, fromPoint.y, this.mousePosition.x, this.mousePosition.y)
+      }
+    },
+    onCreateLineUpdate () {
+      if (this.createLinkConfig.enabled) {
+        this.updateContext()
+        this.updateLines()
+        this.isCreateArrow = true
+      } else if (this.isCreateArrow) {
+        this.isCreateArrow = false
+        this.updateContext()
+        this.updateLines()
       }
     },
     ...mapActions('document/links', [
@@ -95,6 +131,18 @@ export default {
     },
     links () {
       this.updateLines()
+    },
+    mousePosition: {
+      deep: true,
+      handler () {
+        this.onCreateLineUpdate()
+      }
+    },
+    createLinkConfig: {
+      deep: true,
+      handler () {
+        this.onCreateLineUpdate()
+      }
     }
   }
 }

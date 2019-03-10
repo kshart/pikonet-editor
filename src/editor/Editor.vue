@@ -1,6 +1,7 @@
 <template>
-  <div class="editor">
-    <ItemSelector />
+  <LoadingScreen v-if="!isConnected" />
+  <div v-else class="editor">
+    <LeftPanel />
     <Workspace
       class="workspace"
       :rect="{
@@ -21,13 +22,15 @@
 import { mapState } from 'vuex'
 import nodes from '@/nodes/index'
 import Workspace from './Workspace'
-import ItemSelector from './ItemSelector/ItemSelector'
+import LeftPanel from './LeftPanel/LeftPanel'
+import LoadingScreen from './LoadingScreen'
 
 export default {
   name: 'Editor',
   components: {
+    LeftPanel,
     Workspace,
-    ItemSelector
+    LoadingScreen
   },
   computed: {
     nodeConfigureComponent () {
@@ -43,6 +46,7 @@ export default {
     },
     ...mapState('document', {
       nodes: state => state.nodeConfigs,
+      isConnected: state => state.isConnected,
       nodeIdToConfigure: state => state.nodeIdToConfigure
     })
   }
@@ -69,6 +73,7 @@ export default {
 
   .prop-manager {
     width: 300px;
-    background: #0f0;
+    color: #eee;
+    background: #444;
   }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="menu-item" @click="appendNodeConfig">
-    MultiplicationNode
+    Умножение 2 значений
   </div>
 </template>
 
@@ -26,7 +26,7 @@ export default {
 
 <style scoped>
   .menu-item {
-    padding: 15px;
+    padding: 5px 15px;
     transition: background 0.1s ease-out;
   }
   .menu-item:hover {

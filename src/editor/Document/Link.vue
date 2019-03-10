@@ -23,6 +23,7 @@ export default {
     })
   },
   beforeDestroy () {
+    window.removeEventListener('mouseup', this.abortLinking)
     this.dismountLinkPoint({
       id: this.id,
       $vue: this
@@ -30,9 +31,13 @@ export default {
   },
   methods: {
     startLinking () {
+      window.addEventListener('mouseup', this.abortLinking)
       this.beginCreateLink({
         from: this.id
       })
+    },
+    abortLinking () {
+      this.endCreateLink()
     },
     stopLinking () {
       this.endCreateLink({

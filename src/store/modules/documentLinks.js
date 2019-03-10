@@ -1,12 +1,13 @@
 
 const types = {
   BEGIN_CREATE_LINK: 'BEGIN_CREATE_LINK',
+  UPDATE_CREATE_LINK: 'UPDATE_CREATE_LINK',
   END_CREATE_LINK: 'END_CREATE_LINK'
 }
 
 const state = {
   createLink: {
-    enable: false,
+    enabled: false,
     from: null,
     to: null
   },
@@ -68,22 +69,20 @@ const actions = {
    * @param {ActionContext} [vuexContext]
    * @param {Object} payload
    * @param {string} payload.from - начало соединения
-   * @param {string} payload.to - конец соединения
    */
-  updateCreateLink ({ commit }, { from, to }) {
-    commit(types.UPDATE_CREATE_LINK, { from, to })
+  updateCreateLink ({ commit }, { from }) {
+    commit(types.UPDATE_CREATE_LINK, { from })
   },
 
   /**
    * Конец создания соединения
    *
    * @param {ActionContext} [vuexContext]
-   * @param {Object} payload
-   * @param {string} payload.from - начало соединения
+   * @param {?Object} payload
    * @param {string} payload.to - конец соединения
    */
-  endCreateLink ({ commit }, { from, to }) {
-    commit(types.END_CREATE_LINK, { from, to })
+  endCreateLink ({ commit }, payload) {
+    commit(types.END_CREATE_LINK, payload)
   }
 }
 
@@ -100,11 +99,11 @@ const getters = {
 
 const mutations = {
   [types.BEGIN_CREATE_LINK] (state, { from, to }) {
-    state.createLink.enable = true
+    state.createLink.enabled = true
     state.createLink.from = from
   },
   [types.UPDATE_CREATE_LINK] (state, { from, to }) {
-    state.createLink.enable = false
+    state.createLink.enabled = false
     if (from) {
       state.createLink.from = from
     }
@@ -112,17 +111,19 @@ const mutations = {
       state.createLink.to = to
     }
   },
-  [types.END_CREATE_LINK] (state, { from, to }) {
-    state.createLink.to = to
+  [types.END_CREATE_LINK] (state, params) {
+    if (params) {
+      state.createLink.to = params.to
+    }
     const oldLink = state.items.find(link => link.from === state.createLink.from && link.to === state.createLink.to)
-    if (!oldLink) {
+    if (!oldLink && state.createLink.from && state.createLink.to) {
       console.log(state.createLink.from, state.createLink.to)
       state.items.push({
         from: state.createLink.from,
         to: state.createLink.to
       })
     }
-    state.createLink.enable = false
+    state.createLink.enabled = false
     state.createLink.from = null
     state.createLink.to = null
   }
