@@ -29,6 +29,7 @@ library.add(faTrashAlt)
 
 /**
  * @description Шаблон для отображения нод в рабочем пространстве.
+ * @module editor/BaseShape
  *
  * @vue-prop {Number} initialCounter - Initial counter's value
  * @vue-prop {StaticValueNode} nodeConfig конфигурация ноды

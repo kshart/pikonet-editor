@@ -14,6 +14,11 @@
 <script>
 import { mapState } from 'vuex'
 
+/**
+ * @module editor/LoadingScreen
+ * @desc Экран загрузки.
+ * @vue-computed {Number} loadingRetryCount - Колличество попыток соединения с API. Если 0 то соединение установленно.
+ */
 export default {
   name: 'LoadingScreen',
   computed: {

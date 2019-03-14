@@ -34,7 +34,7 @@
         <ul></ul>
     </div>
     
-    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-Shape.html">Shape</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:Shape_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Global</h3><ul><li><a href="global.html#offset">offset</a></li><li><a href="global.html#selectedNodeConfigId">selectedNodeConfigId</a></li></ul></div>
+    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-api_models.html">api/models</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:api/models_sub"></div></li><li><a href="module-editor.html">editor</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:editor_sub"></div></li><li><a href="module-editor_BaseShape.html">editor/BaseShape</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:editor/BaseShape_sub"></div></li><li><a href="module-editor_Editor.html">editor/Editor</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:editor/Editor_sub"></div></li><li><a href="module-editor_LoadingScreen.html">editor/LoadingScreen</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:editor/LoadingScreen_sub"></div></li><li><a href="module-editor_Workspace.html">editor/Workspace</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:editor/Workspace_sub"></div></li><li><a href="module-nodes_MultiplicationNode.html">nodes/MultiplicationNode</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:nodes/MultiplicationNode_sub"></div></li><li><a href="module-nodes_StaticValueNode.html">nodes/StaticValueNode</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:nodes/StaticValueNode_sub"></div></li><li><a href="module-Shape.html">Shape</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:Shape_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="module-api_models.Channel.html">Channel</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:api/models.Channel_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="module-api_models.Channel.html#id">id</a></li><li><a href="module-api_models.Channel.html#links">links</a></li><li><a href="module-api_models.Channel.html#name">name</a></li><li><a href="module-api_models.Channel.html#writable">writable</a></li></ul></div></li><li><a href="module-api_models.Link.html">Link</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:api/models.Link_sub"></div></li><li><a href="module-api_models.Node.html">Node</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:api/models.Node_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="module-api_models.Node.html#external">external</a></li><li><a href="module-api_models.Node.html#id">id</a></li><li><a href="module-api_models.Node.html#position">position</a></li><li><a href="module-api_models.Node.html#server">server</a></li><li><a href="module-api_models.Node.html#title">title</a></li><li><a href="module-api_models.Node.html#type">type</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Global</h3><ul><li><a href="global.html#offset">offset</a></li><li><a href="global.html#selectedNodeConfigId">selectedNodeConfigId</a></li></ul></div>
 </nav>
 <div id="resizer"></div>
 
@@ -49,12 +49,13 @@
             <pre class="prettyprint source linenums"><code>
 const types = {
   BEGIN_CREATE_LINK: 'BEGIN_CREATE_LINK',
+  UPDATE_CREATE_LINK: 'UPDATE_CREATE_LINK',
   END_CREATE_LINK: 'END_CREATE_LINK'
 }
 
 const state = {
   createLink: {
-    enable: false,
+    enabled: false,
     from: null,
     to: null
   },
@@ -116,22 +117,20 @@ const actions = {
    * @param {ActionContext} [vuexContext]
    * @param {Object} payload
    * @param {string} payload.from - начало соединения
-   * @param {string} payload.to - конец соединения
    */
-  updateCreateLink ({ commit }, { from, to }) {
-    commit(types.UPDATE_CREATE_LINK, { from, to })
+  updateCreateLink ({ commit }, { from }) {
+    commit(types.UPDATE_CREATE_LINK, { from })
   },
 
   /**
    * Конец создания соединения
    *
    * @param {ActionContext} [vuexContext]
-   * @param {Object} payload
-   * @param {string} payload.from - начало соединения
+   * @param {?Object} payload
    * @param {string} payload.to - конец соединения
    */
-  endCreateLink ({ commit }, { from, to }) {
-    commit(types.END_CREATE_LINK, { from, to })
+  endCreateLink ({ commit }, payload) {
+    commit(types.END_CREATE_LINK, payload)
   }
 }
 
@@ -148,11 +147,11 @@ const getters = {
 
 const mutations = {
   [types.BEGIN_CREATE_LINK] (state, { from, to }) {
-    state.createLink.enable = true
+    state.createLink.enabled = true
     state.createLink.from = from
   },
   [types.UPDATE_CREATE_LINK] (state, { from, to }) {
-    state.createLink.enable = false
+    state.createLink.enabled = false
     if (from) {
       state.createLink.from = from
     }
@@ -160,17 +159,18 @@ const mutations = {
       state.createLink.to = to
     }
   },
-  [types.END_CREATE_LINK] (state, { from, to }) {
-    state.createLink.to = to
+  [types.END_CREATE_LINK] (state, params) {
+    if (params) {
+      state.createLink.to = params.to
+    }
     const oldLink = state.items.find(link => link.from === state.createLink.from &amp;&amp; link.to === state.createLink.to)
-    if (!oldLink) {
-      console.log(state.createLink.from, state.createLink.to)
+    if (!oldLink &amp;&amp; state.createLink.from &amp;&amp; state.createLink.to &amp;&amp; state.createLink.from !== state.createLink.to) {
       state.items.push({
         from: state.createLink.from,
         to: state.createLink.to
       })
     }
-    state.createLink.enable = false
+    state.createLink.enabled = false
     state.createLink.from = null
     state.createLink.to = null
   }

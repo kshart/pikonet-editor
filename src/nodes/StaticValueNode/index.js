@@ -1,3 +1,6 @@
+/**
+ * @module nodes/StaticValueNode
+ */
 import nodeClass from './StaticValueNode'
 import shape from './Shape'
 import menuItem from './MenuItem'

@@ -1,5 +1,5 @@
 
-import Node from '@/config/Node'
+import Node from '@/api/models/Node'
 
 /**
  * Класс для хранения настроек ноды.

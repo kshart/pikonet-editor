@@ -4,6 +4,7 @@ import document from './modules/document'
 
 Vue.use(Vuex)
 
+// TODO У редактора свой стор, который регистрируется динамически.
 const store = new Vuex.Store({
   modules: {
     document

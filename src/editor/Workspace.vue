@@ -6,7 +6,7 @@
     @mousedown.right="mouseDown"
     @contextmenu.capture.prevent
   >
-    <svg v-if="showGrid" class="grid" :viewBox="`0 0 ${rect.width} ${rect.height}`" :style="gridPosition">
+    <svg v-if="showGrid" class="grid" :viewBox="`0 0 ${rect.width} ${rect.height}`" :style="gridStyle">
       <line
         v-for="(item, key) in grid"
         class="grid-line"
@@ -28,6 +28,20 @@
 </template>
 
 <script>
+/**
+ * @desc Рабочее пространство. Компонент предназначен масштабирования и скролинга документа.
+ * @module editor/Workspace
+ * @vue-prop {Object} rect - Размеры рабочей области.
+ * @vue-data {Boolean} mouseOver - true если курсор находится над рабочей областью.
+ * @vue-data {Boolean} showGrid - true если необходимо отображать сетку.
+ * @vue-data {Point} offset - Отступ от курсора до документа. null если drag and drop не активен.
+ * @vue-data {Number} zoom - Уровень зума. Не работает.
+ * @vue-data {Number} aspectRatio - Соотношение ширины к высоте документа.
+ * @vue-data {Point} position - Текущая позиция документа.
+ * @vue-computed {Object} documentStyle - Стиль для документа.
+ * @vue-computed {Object} grid - Сетка. Просто сетка.
+ * @vue-computed {Object} gridStyle - Стиль для сетки.
+ */
 import Document from './Document/Document'
 
 export default {
@@ -78,7 +92,7 @@ export default {
       }
       return result
     },
-    gridPosition () {
+    gridStyle () {
       return {
         transform: `translate(${this.position.x % 20 - 9}px, ${this.position.y % 20 - 9}px)`
       }
@@ -114,6 +128,7 @@ export default {
       this.position.y = (e.clientY - bbox.y) - this.offset.y
     },
     mouseUp (e) {
+      this.offset = null
       window.removeEventListener('mousemove', this.mouseMove)
     },
     mouseEnter (e) {

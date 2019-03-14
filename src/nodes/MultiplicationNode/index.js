@@ -1,3 +1,6 @@
+/**
+ * @module nodes/MultiplicationNode
+ */
 import nodeClass from './MultiplicationNode'
 import shape from './Shape'
 import menuItem from './MenuItem'

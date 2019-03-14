@@ -25,6 +25,14 @@ import Workspace from './Workspace'
 import LeftPanel from './LeftPanel/LeftPanel'
 import LoadingScreen from './LoadingScreen'
 
+/**
+ * @description Редактор схем. Основной компонент редактора.
+ * @module editor/Editor
+ * @vue-computed {String} nodeConfigureComponent - Имя компонента, редактора параметров нод.
+ * @vue-computed {String} nodeIdToConfigure - ID компонента для редактирования параметров.
+ * @vue-computed {Array<api/models/Node>} nodes - Список всех доступных нод.
+ * @vue-computed {Boolean} isConnected - Наличие соединения с API.
+ */
 export default {
   name: 'Editor',
   components: {

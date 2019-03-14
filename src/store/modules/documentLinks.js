@@ -116,8 +116,7 @@ const mutations = {
       state.createLink.to = params.to
     }
     const oldLink = state.items.find(link => link.from === state.createLink.from && link.to === state.createLink.to)
-    if (!oldLink && state.createLink.from && state.createLink.to) {
-      console.log(state.createLink.from, state.createLink.to)
+    if (!oldLink && state.createLink.from && state.createLink.to && state.createLink.from !== state.createLink.to) {
       state.items.push({
         from: state.createLink.from,
         to: state.createLink.to

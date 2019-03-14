@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Module: Shape | Pikonet Editor</title>
+    <title>Module: editor/Workspace | Pikonet Editor</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -46,9 +46,7 @@
 
 <header>
     
-        <h2>Shape</h2>
-        
-            
+        <h2>editor/Workspace</h2>
         
             
         
@@ -60,7 +58,7 @@
         <div class="container-overview">
         
             
-                <div class="description"><p>Нода для умножения.</p></p></div></div> 
+                <div class="description"><p>Рабочее пространство. Компонент предназначен масштабирования и скролинга документа.</p></p></div></div> 
 
 <style>
 .container-overview {
@@ -91,11 +89,11 @@
         <tbody>
         
         <tr>
-            <td class="name"><code>nodeConfig</code></td>
-            <td class="type"><span class="param-type">MultiplicationNode</span></td>
+            <td class="name"><code>rect</code></td>
+            <td class="type"><span class="param-type">Object</span></td>
             <td class="description">-</td>
             <td class="description"><b>Yes</b></td>
-            <td class="description last">конфигурация ноды</td>
+            <td class="description last">Размеры рабочей области.</td>
         </tr>
         
         </tbody>
@@ -104,253 +102,59 @@
 
 
 
-
-
-
-
-
-<div class="container-overview"><div><p> 
-</div>
-            
-
-            
-                
-
-<dt>
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-</dd>
-
-            
-                
-
-<dt>
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-</dd>
-
-            
-        
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>Shape</h2>
-        
-            
-        
-            
-        
-    
-</header>
-
-<article>
-    
-        <div class="container-overview">
-        
-            
-                <div class="description"><p>Нода для статического числа.</p></p></div></div> 
-
-<style>
-.container-overview {
-    display: none;
-}
-
-.main section article table td.name,
-.main section article table td.type,
-.main section article table td.attributes,
-.main section article table td.default {
-    max-width: none;
-}
-</style>
-
-
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-props">Props</h3>
+<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-data">Data</h3>
 <div class="container-params">
-    <table class="params" data-jsdoc-vuejs="table-props">
+    <table class="params" data-jsdoc-vuejs="table-data">
         <thead>
         <tr>
             <th>Name</th>
             <th>Type</th>
             <th>Default value</th>
-            <th>Required?</th>
             <th class="last">Description</th>
         </tr>
         </thead>
         <tbody>
         
         <tr>
-            <td class="name"><code>initialCounter</code></td>
+            <td class="name"><code>mouseOver</code></td>
+            <td class="type"><span class="param-type">Boolean</span></td>
+            <td class="description">-</td>
+            <td class="description last">true если курсор находится над рабочей областью.</td>
+        </tr>
+        
+        <tr>
+            <td class="name"><code>showGrid</code></td>
+            <td class="type"><span class="param-type">Boolean</span></td>
+            <td class="description">-</td>
+            <td class="description last">true если необходимо отображать сетку.</td>
+        </tr>
+        
+        <tr>
+            <td class="name"><code>offset</code></td>
+            <td class="type"><span class="param-type">Point</span></td>
+            <td class="description">-</td>
+            <td class="description last">Отступ от курсора до документа. null если drag and drop не активен.</td>
+        </tr>
+        
+        <tr>
+            <td class="name"><code>zoom</code></td>
             <td class="type"><span class="param-type">Number</span></td>
             <td class="description">-</td>
-            <td class="description"><b>Yes</b></td>
-            <td class="description last">Initial counter's value</td>
+            <td class="description last">Уровень зума. Не работает.</td>
         </tr>
         
         <tr>
-            <td class="name"><code>nodeConfig</code></td>
-            <td class="type"><span class="param-type">StaticValueNode</span></td>
+            <td class="name"><code>aspectRatio</code></td>
+            <td class="type"><span class="param-type">Number</span></td>
             <td class="description">-</td>
-            <td class="description"><b>Yes</b></td>
-            <td class="description last">конфигурация ноды</td>
+            <td class="description last">Соотношение ширины к высоте документа.</td>
+        </tr>
+        
+        <tr>
+            <td class="name"><code>position</code></td>
+            <td class="type"><span class="param-type">Point</span></td>
+            <td class="description">-</td>
+            <td class="description last">Текущая позиция документа.</td>
         </tr>
         
         </tbody>
@@ -359,85 +163,62 @@
 
 
 
+<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-computed">Computed</h3>
+<div class="container-params">
+    <table class="params" data-jsdoc-vuejs="table-computed">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+            <td class="name"><code>documentStyle</code></td>
+            <td class="type"><span class="param-type">Object</span></td>
+            <td class="description last">Стиль для документа.</td>
+        </tr>
+        
+        <tr>
+            <td class="name"><code>grid</code></td>
+            <td class="type"><span class="param-type">Object</span></td>
+            <td class="description last">Сетка. Просто сетка.</td>
+        </tr>
+        
+        <tr>
+            <td class="name"><code>gridStyle</code></td>
+            <td class="type"><span class="param-type">Object</span></td>
+            <td class="description last">Стиль для сетки.</td>
+        </tr>
+        
+        </tbody>
+    </table>
+</div>
 
 
 
+<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-event">Events</h3>
+<div class="container-params">
+    <table class="params" data-jsdoc-vuejs="table-event">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Payload Type</th>
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        </tbody>
+    </table>
+</div>
 
 
 <div class="container-overview"><div><p> 
 </div>
             
-
-            
-                
-
-<dt>
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-</dd>
 
             
                 
@@ -553,7 +334,7 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'module:Shape_sub'.replace(/"/g, '_');
+        var id = 'module:editor/Workspace_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 
