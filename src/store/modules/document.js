@@ -1,5 +1,4 @@
-
-import Api from '@/api/index'
+import Api from '@/api/Api'
 import items from '@/nodes/index'
 import documentLinks from './documentLinks'
 
@@ -18,16 +17,45 @@ const types = {
 }
 
 const state = {
+  /**
+   * Состояние соединения с API.
+   * @type {Boolean}
+   */
   isConnected: false,
+
+  /**
+   * Колличество попыток соединения с API. Если 0 то соединение установленно.
+   * @type {Number}
+   */
   loadingRetryCount: 0,
+
+  /**
+   * Конфигурации нод.
+   * @type {Array<module:api/models.Node>}
+   */
   nodeConfigs: [],
+
+  /**
+   * ID нод которые необходимо обновить.
+   * @type {Array<String>}
+   */
   isUpdateIds: [],
+
+  /**
+   * ID ноды для редактирования параметров.
+   * @type {String}
+   */
   nodeIdToConfigure: null
 }
 
-const api = new Api()
+const api = new Api({})
 // let updateTimer = null
 
+/**
+ * asd
+ * @namespace
+ * @memberof store/document
+ */
 const actions = {
   /**
    * Инициализация модуля
@@ -170,6 +198,9 @@ const mutations = {
   }
 }
 
+/**
+ * @namespace store/document
+ */
 export default {
   namespaced: true,
   modules: {

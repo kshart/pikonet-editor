@@ -1,11 +1,6 @@
 /**
- * @author Артём Каширин <kshart@yandex.ru>
- * @fileoverview Module
- */
-
-/**
  * Класс для хранения настроек канала.
- * @class
+ * @author Артём Каширин <kshart@yandex.ru>
  * @memberof module:api/models
  */
 export default class Channel {

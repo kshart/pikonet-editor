@@ -6,13 +6,14 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "generate-docs": "rd /s /q docs && npx jsdoc -c jsdoc.json",
+    "generate-docs": "rd /s /q docs && npx jsdoc --verbose -c jsdoc.json",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.12",
     "@fortawesome/free-solid-svg-icons": "^5.6.3",
     "@fortawesome/vue-fontawesome": "^0.1.4",
+    "babel-plugin-module-resolver": "^3.2.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
