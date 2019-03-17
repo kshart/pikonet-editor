@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Module: nodes/MultiplicationNode | Pikonet Editor</title>
+    <title>Source: api/ManagerAPI.js | Pikonet Editor</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -41,49 +43,50 @@
 
 
 
-
-<section>
-
-<header>
     
-        <h2>nodes/MultiplicationNode</h2>
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * API для работы с данными каналов.
+ * @author Артём Каширин &lt;kshart@yandex.ru>
+ * @memberof api
+ */
+export default class ManagerAPI {
+  constructor ({ api }) {
+    this.api = api
+  }
 
-<article>
-    
-        <div class="container-overview">
-        
-            
-
-            
-        
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+  nodeGetList () {
+    this.api.send('nodeGetList')
+  }
+  nodeCreate (node) {
+    this.api.send('nodeCreate', { node })
+  }
+  nodeUpdate (nodes) {
+    this.api.send('nodeUpdate', { nodes })
+  }
+  nodeDelete (id) {
+    this.api.send('nodeDelete', { id })
+  }
+  linkGetList () {
+    this.api.send('linkGetList')
+  }
+  linkCreate (link) {
+    this.api.send('linkCreate', { link })
+  }
+  linkDelete (id) {
+    this.api.send('linkDelete', { id })
+  }
+  channelWatch (channel) {
+    this.api.send('channelWatch', { channel })
+  }
+  channelUnwatch (channel) {
+    this.api.send('channelUnwatch', { channel })
+  }
+}
+</code></pre>
+        </article>
+    </section>
 
 
 
@@ -100,7 +103,7 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'module:nodes/MultiplicationNode_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

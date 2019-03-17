@@ -1,7 +1,7 @@
 /**
  * Класс для хранения настроек канала.
  * @author Артём Каширин <kshart@yandex.ru>
- * @memberof module:api/models
+ * @memberof api.models
  */
 export default class Channel {
   constructor ({ id, name, writable }) {

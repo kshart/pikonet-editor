@@ -20,6 +20,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import api from '@/api/index'
 import nodes from '@/nodes/index'
 import Workspace from './Workspace'
 import LeftPanel from './LeftPanel/LeftPanel'
@@ -35,6 +36,7 @@ import LoadingScreen from './LoadingScreen'
  */
 export default {
   name: 'Editor',
+  api,
   components: {
     LeftPanel,
     Workspace,

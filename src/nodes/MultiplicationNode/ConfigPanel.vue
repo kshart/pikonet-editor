@@ -6,7 +6,11 @@
 
 <script>
 export default {
-  name: 'MultiplicationNode-ConfigPanel'
+  name: 'MultiplicationNode-ConfigPanel',
+  mounted () {
+    this.$api.channelBus.getChannelList()
+      .then(channels => console.log(channels))
+  }
 }
 </script>
 

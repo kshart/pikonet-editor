@@ -1,7 +1,7 @@
 /**
  * Класс для хранения настроек соединений.
  * @author Артём Каширин <kshart@yandex.ru>
- * @memberof module:api/models
+ * @memberof api.models
  */
 export default class Link {
 }

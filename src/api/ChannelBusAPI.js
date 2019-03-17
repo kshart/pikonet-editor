@@ -1,9 +1,9 @@
 /**
  * API для работы с данными каналов.
  * @author Артём Каширин <kshart@yandex.ru>
- * @memberof module:api
+ * @memberof api
  */
-export default class ChannelBus {
+export default class ChannelBusAPI {
   constructor ({ api }) {
     /**
      * Уникальный ключ канала
@@ -12,9 +12,21 @@ export default class ChannelBus {
     this.api = api
 
     this.registredChannels = new Map()
+    this.channelsData = new Map()
+  }
+
+  on () {
+    this.api.addEventListener.apply(this.api, arguments)
+  }
+
+  off () {
+    this.api.removeEventListener.apply(this.api, arguments)
   }
 
   getChannelList (nodeId) {
+    return new Promise((resolve, reject) => {
+      resolve([])
+    })
   }
   channelRead (channelId) {
   }

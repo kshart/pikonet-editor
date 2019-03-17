@@ -3,58 +3,12 @@ import items from '@/nodes/index'
 import documentLinks from './documentLinks'
 
 const types = {
-  // LOAD: 'LOAD',
-  INIT_NODE_CONFIGS: 'INIT_NODE_CONFIGS',
-  APPEND_NODE_CONFIG: 'APPEND_NODE_CONFIG',
-  REMOVE_NODE_CONFIG: 'REMOVE_NODE_CONFIG',
-  UPDATE_NODE_CONFIG: 'UPDATE_NODE_CONFIG',
-  selectItem: 'selectItem',
-  setAttributes: 'setAttributes',
-  FLUSH_UPDATED_NODES: 'FLUSH_UPDATED_NODES',
-  SELECT_NODE_TO_CONFIGURE: 'SELECT_NODE_TO_CONFIGURE',
-  UPDATE_RETRY_COUNT: 'UPDATE_RETRY_COUNT',
-  UPDATE_CONNECTION_STATE: 'UPDATE_CONNECTION_STATE'
 }
 
 const state = {
-  /**
-   * Состояние соединения с API.
-   * @type {Boolean}
-   */
-  isConnected: false,
-
-  /**
-   * Колличество попыток соединения с API. Если 0 то соединение установленно.
-   * @type {Number}
-   */
-  loadingRetryCount: 0,
-
-  /**
-   * Конфигурации нод.
-   * @type {Array<module:api/models.Node>}
-   */
-  nodeConfigs: [],
-
-  /**
-   * ID нод которые необходимо обновить.
-   * @type {Array<String>}
-   */
-  isUpdateIds: [],
-
-  /**
-   * ID ноды для редактирования параметров.
-   * @type {String}
-   */
-  nodeIdToConfigure: null
 }
 
-// let updateTimer = null
 
-/**
- * asd
- * @namespace
- * @memberof store/document
- */
 const actions = {
   /**
    * Инициализация модуля
@@ -63,31 +17,31 @@ const actions = {
    */
   init ({ state, commit }) {
     api.open()
-    api.addEventListener('open', event => {
-      commit(types.UPDATE_RETRY_COUNT, { loadingRetryCount: 0 })
-      commit(types.UPDATE_CONNECTION_STATE, { isConnected: true })
-      api.manager.nodeGetList()
-    })
-    api.addEventListener('close', event => {
-      commit(types.UPDATE_CONNECTION_STATE, { isConnected: false })
-    })
-    api.addEventListener('tryConnect', event => {
+    api.channelBus.on('tryConnect', event => {
       commit(types.UPDATE_RETRY_COUNT, {
         loadingRetryCount: state.loadingRetryCount + 1
       })
     })
-    api.addEventListener('nodeList', event => {
+    api.channelBus.on('open', event => {
+      commit(types.UPDATE_RETRY_COUNT, { loadingRetryCount: 0 })
+      commit(types.UPDATE_CONNECTION_STATE, { isConnected: true })
+      api.manager.nodeGetList()
+    })
+    api.channelBus.on('close', event => {
+      commit(types.UPDATE_CONNECTION_STATE, { isConnected: false })
+    })
+    api.channelBus.on('nodeList', event => {
       console.log(event.params.nodes)
       commit(types.INIT_NODE_CONFIGS, event.params.nodes)
     })
-    api.addEventListener('nodeCreated', event => {
+    api.channelBus.on('nodeCreated', event => {
       commit(types.APPEND_NODE_CONFIG, event.params.node)
     })
-    api.addEventListener('nodeUpdated', event => {
+    api.channelBus.on('nodeUpdated', event => {
       console.log('NODE_UPDATED')
       // commit(types.UPDATE_NODE_CONFIG, event.params.nodeIds)
     })
-    api.addEventListener('nodeDeleted', event => {
+    api.channelBus.on('nodeDeleted', event => {
       commit(types.REMOVE_NODE_CONFIG, event.params.id)
     })
     /* updateTimer = */ setInterval(() => {
@@ -198,7 +152,7 @@ const mutations = {
 }
 
 /**
- * @namespace store/document
+ * @memberof store
  */
 export default {
   namespaced: true,

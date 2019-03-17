@@ -1,7 +1,7 @@
 /**
  * Класс для хранения настроек ноды.
  * @author Артём Каширин <kshart@yandex.ru>
- * @memberof module:api/models
+ * @memberof api.models
  */
 export default class Node {
   constructor ({ id, type, server, position, title }) {
@@ -38,7 +38,7 @@ export default class Node {
     /**
      * Параметры для внешних систем
      * @type {Object}
-     * @property {Array<module:api/models.Channel>} channels каналы.
+     * @property {Array<api.models.Channel>} channels каналы.
      */
     this.external = {}
   }

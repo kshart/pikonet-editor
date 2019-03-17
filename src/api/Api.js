@@ -1,17 +1,30 @@
-import ChannelBus from './ChannelBus'
-
 /**
  * Соединение с API.
  * @author Артём Каширин <kshart@yandex.ru>
- * @memberof module:api
+ * @memberof api
  * @extends EventTarget
  */
 export default class Api extends EventTarget {
-  constructor ({ url = 'ws://127.0.0.1:1069' }) {
+  install (Vue) {
+    Vue.mixin({
+      beforeCreate () {
+        const options = this.$options
+        if (options.api) {
+          this.$api = typeof options.api === 'function'
+            ? options.api()
+            : options.api
+        } else if (options.parent && options.parent.$api) {
+          this.$api = options.parent.$api
+        }
+      }
+    })
+  }
+
+  constructor ({ url = 'ws://127.0.0.1:1069', modules }) {
     super()
 
     /**
-     * Уникальный ключ канала.
+     * Путь к API.
      * @type {!String}
      */
     this.url = url
@@ -22,7 +35,9 @@ export default class Api extends EventTarget {
      */
     this.wSocket = null
 
-    this.channelBus = new ChannelBus({ api: this })
+    for (let moduleName in modules) {
+      this[moduleName] = new modules[moduleName]({ api: this })
+    }
   }
 
   get connected () {
@@ -44,9 +59,10 @@ export default class Api extends EventTarget {
       setTimeout(() => this.open(), 5000)
     })
     this.wSocket.addEventListener('message', event => {
-      const { type, payload } = JSON.parse(event.data)
-      const eventData = new Event(type, payload)
-      eventData.payload = payload
+      const { id, method, params } = JSON.parse(event.data)
+      const eventData = new Event(method, params)
+      eventData.id = id
+      eventData.params = params
       this.dispatchEvent(eventData)
     })
     this.addEventListener('nodeList', event => console.log('nodeList', event))
@@ -54,17 +70,19 @@ export default class Api extends EventTarget {
 
   /**
    * Отправить пакет
-   * @param {String} type тип пакета
-   * @param {Object} payload "полезная нагрузка", зависит от типа пакета
+   * @param {String} method - Тип пакета.
+   * @param {Object} params - "полезная нагрузка", зависит от типа пакета.
+   * @access package
    */
-  send (type, payload = null) {
+  send (method, params = null) {
     if (!this.connected) {
       console.warn('API: Соединение отсутствует')
       return false
     }
     this.wSocket.send(JSON.stringify({
-      type,
-      payload
+      id: 0,
+      method,
+      params
     }))
   }
 }
