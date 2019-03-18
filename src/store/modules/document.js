@@ -62,38 +62,36 @@ const actions = {
    * @param {object} context
    */
   init ({ state, commit }) {
-    api.open()
-    api.addEventListener('open', event => {
+    api.manager.on('open', event => {
       commit(types.UPDATE_RETRY_COUNT, { loadingRetryCount: 0 })
       commit(types.UPDATE_CONNECTION_STATE, { isConnected: true })
       api.manager.nodeGetList()
     })
-    api.addEventListener('close', event => {
+    api.manager.on('close', event => {
       commit(types.UPDATE_CONNECTION_STATE, { isConnected: false })
     })
-    api.addEventListener('tryConnect', event => {
+    api.manager.on('tryConnect', event => {
       commit(types.UPDATE_RETRY_COUNT, {
         loadingRetryCount: state.loadingRetryCount + 1
       })
     })
-    api.addEventListener('nodeList', event => {
+    api.manager.on('nodeList', event => {
       console.log(event.params.nodes)
       commit(types.INIT_NODE_CONFIGS, event.params.nodes)
     })
-    api.addEventListener('nodeCreated', event => {
+    api.manager.on('nodeCreated', event => {
       commit(types.APPEND_NODE_CONFIG, event.params.node)
     })
-    api.addEventListener('nodeUpdated', event => {
+    api.manager.on('nodeUpdated', event => {
       console.log('NODE_UPDATED')
       // commit(types.UPDATE_NODE_CONFIG, event.params.nodeIds)
     })
-    api.addEventListener('nodeDeleted', event => {
+    api.manager.on('nodeDeleted', event => {
       commit(types.REMOVE_NODE_CONFIG, event.params.id)
     })
     /* updateTimer = */ setInterval(() => {
-      if (api.connected && state.isUpdateIds.length > 0) {
+      if (api.manager.connected && state.isUpdateIds.length > 0) {
         const nodes = state.isUpdateIds.map(id => state.nodeConfigs.find(conf => conf.id === id))
-        console.log(state.isUpdateIds, nodes)
         api.manager.nodeUpdate(nodes)
         commit(types.FLUSH_UPDATED_NODES)
       }

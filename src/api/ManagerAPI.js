@@ -4,35 +4,47 @@
  * @memberof api
  */
 export default class ManagerAPI {
-  constructor ({ api }) {
-    this.api = api
+  constructor ({ connection }) {
+    this.connection = connection
+  }
+
+  get connected () {
+    return this.connection.connected
+  }
+
+  on () {
+    this.connection.addEventListener.apply(this.connection, arguments)
+  }
+
+  off () {
+    this.connection.removeEventListener.apply(this.connection, arguments)
   }
 
   nodeGetList () {
-    this.api.send('nodeGetList')
+    this.connection.send('nodeGetList')
   }
   nodeCreate (node) {
-    this.api.send('nodeCreate', { node })
+    this.connection.send('nodeCreate', { node })
   }
   nodeUpdate (nodes) {
-    this.api.send('nodeUpdate', { nodes })
+    this.connection.send('nodeUpdate', { nodes })
   }
   nodeDelete (id) {
-    this.api.send('nodeDelete', { id })
+    this.connection.send('nodeDelete', { id })
   }
   linkGetList () {
-    this.api.send('linkGetList')
+    this.connection.send('linkGetList')
   }
   linkCreate (link) {
-    this.api.send('linkCreate', { link })
+    this.connection.send('linkCreate', { link })
   }
   linkDelete (id) {
-    this.api.send('linkDelete', { id })
+    this.connection.send('linkDelete', { id })
   }
   channelWatch (channel) {
-    this.api.send('channelWatch', { channel })
+    this.connection.send('channelWatch', { channel })
   }
   channelUnwatch (channel) {
-    this.api.send('channelUnwatch', { channel })
+    this.connection.send('channelUnwatch', { channel })
   }
 }

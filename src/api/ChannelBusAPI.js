@@ -4,29 +4,31 @@
  * @memberof api
  */
 export default class ChannelBusAPI {
-  constructor ({ api }) {
+  constructor ({ connection }) {
     /**
      * Уникальный ключ канала
      * @type {String}
      */
-    this.api = api
+    this.connection = connection
 
     this.registredChannels = new Map()
     this.channelsData = new Map()
   }
 
+  get connected () {
+    return this.connection.connected
+  }
+
   on () {
-    this.api.addEventListener.apply(this.api, arguments)
+    this.connection.addEventListener.apply(this.connection, arguments)
   }
 
   off () {
-    this.api.removeEventListener.apply(this.api, arguments)
+    this.connection.removeEventListener.apply(this.connection, arguments)
   }
 
   getChannelList (nodeId) {
-    return new Promise((resolve, reject) => {
-      resolve([])
-    })
+    return this.connection.send('getChannelList', { nodeId }, { waitResult: true })
   }
   channelRead (channelId) {
   }
