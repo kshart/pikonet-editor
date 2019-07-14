@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Class: ChannelBusAPI | Pikonet Editor</title>
+    <title>Class: WebSocketConnection | Pikonet Editor</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -47,9 +47,9 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="api.html">api</a>~</span>ChannelBusAPI<span class="signature">()</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="api.html">api</a>~</span>WebSocketConnection<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>API для работы с данными каналов.</p></div>
+            <div class="class-description"><p>Соединение с API.</p></div>
         
     
 </header>
@@ -62,14 +62,14 @@
 
 <dt>
     
-        <h4 class="name" id="ChannelBusAPI">
+        <h4 class="name" id="WebSocketConnection">
             
-                new <span class="type-signature"></span>ChannelBusAPI<span class="signature">()</span><span class="type-signature"></span>
+                new <span class="type-signature"></span>WebSocketConnection<span class="signature">()</span><span class="type-signature"></span>
                 
             
             <div class="container-source members">
-                <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-                <code><a href="api_ChannelBusAPI.js.html#line14">line 14</a></code>
+                <code><a href="api_WebSocketConnection.js.html">api/WebSocketConnection.js</a></code>,
+                <code><a href="api_WebSocketConnection.js.html#line15">line 15</a></code>
             </div>
             
         </h4>
@@ -154,6 +154,17 @@
     
 
     
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li>EventTarget</li>
+    </ul>
+
+
+    
 
     
 
@@ -172,12 +183,12 @@
             
 
 <dt>
-<h4 class="name" id="connection">
-    <span class="type-signature"></span>connection<span class="type-signature"> :String</span>
+<h4 class="name" id="requestWaitResponce">
+    <span class="type-signature"></span>requestWaitResponce<span class="type-signature"> :Map.&lt;String, Set.&lt;function()>></span>
     
     <div class="container-source members">
-        <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-        <code><a href="api_ChannelBusAPI.js.html#line8">line 8</a></code>
+        <code><a href="api_WebSocketConnection.js.html">api/WebSocketConnection.js</a></code>,
+        <code><a href="api_WebSocketConnection.js.html#line24">line 24</a></code>
     </div>
     
 </h4>
@@ -187,7 +198,86 @@
 <dd>
     
     <div class="description">
-        <p>Уникальный ключ канала</p>
+        <p>socket</p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Map.&lt;String, Set.&lt;function()>></span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="url">
+    <span class="type-signature"><span class="icon green">non-null</span> </span>url<span class="type-signature"> :String</span>
+    
+    <div class="container-source members">
+        <code><a href="api_WebSocketConnection.js.html">api/WebSocketConnection.js</a></code>,
+        <code><a href="api_WebSocketConnection.js.html#line11">line 11</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Путь к API.</p>
     </div>
     
 
@@ -258,14 +348,14 @@
 
 <dt>
     
-        <h4 class="name" id="channelSend">
+        <h4 class="name" id="open">
             
-                <span class="type-signature"></span>channelSend<span class="signature">(channelId, data)</span><span class="type-signature"></span>
+                <span class="type-signature"></span>open<span class="signature">()</span><span class="type-signature"></span>
                 
             
             <div class="container-source members">
-                <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-                <code><a href="api_ChannelBusAPI.js.html#line36">line 36</a></code>
+                <code><a href="api_WebSocketConnection.js.html">api/WebSocketConnection.js</a></code>,
+                <code><a href="api_WebSocketConnection.js.html#line38">line 38</a></code>
             </div>
             
         </h4>
@@ -277,7 +367,7 @@
 
     
     <div class="description">
-        <p>Отправить данные в канал.</p>
+        <p>Открыть соединение.</p>
     </div>
     
 
@@ -287,79 +377,6 @@
 
     
 
-    
-    <div class="container-params">
-        <h5>Parameters:</h5>
-        
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>channelId</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>ID канала.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">any</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Данные которые необходимо записать в канал.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
     
 
     
@@ -420,14 +437,14 @@
 
 <dt>
     
-        <h4 class="name" id="channelUnwatch">
+        <h4 class="name" id="send">
             
-                <span class="type-signature"></span>channelUnwatch<span class="signature">(channelId, component)</span><span class="type-signature"></span>
+                <span class="type-signature"><span class="icon green">package</span> </span>send<span class="signature">(method, params, config)</span><span class="type-signature"></span>
                 
             
             <div class="container-source members">
-                <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-                <code><a href="api_ChannelBusAPI.js.html#line54">line 54</a></code>
+                <code><a href="api_WebSocketConnection.js.html">api/WebSocketConnection.js</a></code>,
+                <code><a href="api_WebSocketConnection.js.html#line71">line 71</a></code>
             </div>
             
         </h4>
@@ -439,7 +456,7 @@
 
     
     <div class="description">
-        <p>Удалить просмотрщик канала.</p>
+        <p>Отправить пакет</p>
     </div>
     
 
@@ -477,7 +494,7 @@
 
         <tr>
             
-                <td class="name"><code>channelId</code></td>
+                <td class="name"><code>method</code></td>
             
 
             <td class="type">
@@ -497,20 +514,20 @@
                 </td>
             
 
-            <td class="description last"><p>ID канала.</p></td>
+            <td class="description last"><p>Тип пакета.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>component</code></td>
+                <td class="name"><code>params</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">any</span>
+<span class="param-type">Object</span>
 
 
             
@@ -526,181 +543,82 @@
                 </td>
             
 
-            <td class="description last"><p>Компонент для которого был зарегистрирован слушатель канала.</p></td>
+            <td class="description last"><p>&quot;полезная нагрузка&quot;, зависит от типа пакета.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Параметры запроса.</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>waitResult</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Необходимость ожидать ответ на запрос.</p></td>
         </tr>
 
     
     </tbody>
 </table>
 
-    </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-</dd>
-
-            
-                
-
-<dt>
-    
-        <h4 class="name" id="channelWatch">
-            
-                <span class="type-signature"></span>channelWatch<span class="signature">(channelId, component)</span><span class="type-signature"></span>
-                
-            
-            <div class="container-source members">
-                <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-                <code><a href="api_ChannelBusAPI.js.html#line45">line 45</a></code>
-            </div>
-            
-        </h4>
-
-        
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Зарегистрировать просмотрщик канала.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-
-    
-    <div class="container-params">
-        <h5>Parameters:</h5>
-        
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>channelId</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
             </td>
-
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>ID канала.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>component</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">any</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    null
-                
-                </td>
-            
-
-            <td class="description last"><p>Компонент для которого регистрируется слушатель канала.</p></td>
         </tr>
 
     
@@ -788,7 +706,7 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'api.ChannelBusAPI_sub'.replace(/"/g, '_');
+        var id = 'api.WebSocketConnection_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

@@ -2,7 +2,7 @@
   <BaseShape :nodeConfig="nodeConfig" @select="$emit('select')" @startDrag="$emit('startDrag', $event)">
     <slot>
       <div class="shape-content">
-        Значение: {{ nodeConfig.value || '{ не задано }' }}
+        Значение: {{ channels.value }}
       </div>
       <div class="link">
         <Link :id="nodeConfig.id + '/value'"/>
@@ -14,6 +14,7 @@
 <script>
 import Link from '@/editor/Document/Link'
 import BaseShape from '@/editor/BaseShape'
+import ChannelBusClient from '@/channelBus/ChannelBusComponent'
 
 /**
  * @description Нода для статического числа.
@@ -27,7 +28,19 @@ export default {
     Link,
     BaseShape
   },
-  props: ['nodeConfig']
+  mixins: [ ChannelBusClient ],
+  props: ['nodeConfig'],
+  computed: {
+    channelsConfig () {
+      return [
+        {
+          propName: 'value',
+          nodeId: this.nodeConfig.id,
+          channelName: 'value'
+        }
+      ]
+    }
+  }
 }
 </script>
 

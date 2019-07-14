@@ -31,6 +31,10 @@ export default {
       node: state => state.nodeConfigs.find(node => node.id === state.nodeIdToConfigure)
     })
   },
+  mounted () {
+    this.$api.channelBus.getChannelList(this.node.id)
+      .then(channels => console.log(channels))
+  },
   methods: {
     ...mapMutations('document', ['UPDATE_NODE_CONFIG'])
   }

@@ -20,7 +20,7 @@ const api = new Api({
       connection: new WebSocketConnection({ url: 'ws://127.0.0.1:1069' })
     }),
     channelBus: new ChannelBusAPI({
-      connection: new WebSocketConnection({ url: 'ws://127.0.0.1:69' })
+      connection: new WebSocketConnection({ url: 'ws://127.0.0.1:169' })
     })
   }
 })

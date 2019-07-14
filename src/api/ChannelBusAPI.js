@@ -28,7 +28,7 @@ export default class ChannelBusAPI {
   }
 
   getChannelList (nodeId) {
-    return this.connection.send('getChannelList', { nodeId }, { waitResult: true })
+    return this.connection.send('nodeGetChannelList', { nodeId }, { waitResult: true })
   }
   channelRead (channelId) {
   }

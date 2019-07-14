@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Class: ChannelBusAPI | Pikonet Editor</title>
+    <title>Class: ChannelBusManager | Pikonet Editor</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -47,9 +47,9 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="api.html">api</a>~</span>ChannelBusAPI<span class="signature">()</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="channelBus.html">channelBus</a>~</span>ChannelBusManager<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>API для работы с данными каналов.</p></div>
+            <div class="class-description"><p>Компонент для регистрации каналов, данные из которых нужно обновлять.</p></div>
         
     
 </header>
@@ -62,14 +62,14 @@
 
 <dt>
     
-        <h4 class="name" id="ChannelBusAPI">
+        <h4 class="name" id="ChannelBusManager">
             
-                new <span class="type-signature"></span>ChannelBusAPI<span class="signature">()</span><span class="type-signature"></span>
+                new <span class="type-signature"></span>ChannelBusManager<span class="signature">()</span><span class="type-signature"></span>
                 
             
             <div class="container-source members">
-                <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-                <code><a href="api_ChannelBusAPI.js.html#line14">line 14</a></code>
+                <code><a href="channelBus_ChannelBusManager.js.html">channelBus/ChannelBusManager.js</a></code>,
+                <code><a href="channelBus_ChannelBusManager.js.html#line24">line 24</a></code>
             </div>
             
         </h4>
@@ -166,89 +166,6 @@
     
 
     
-        <h3 class="subsection-title">Members</h3>
-
-        <dl>
-            
-
-<dt>
-<h4 class="name" id="connection">
-    <span class="type-signature"></span>connection<span class="type-signature"> :String</span>
-    
-    <div class="container-source members">
-        <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-        <code><a href="api_ChannelBusAPI.js.html#line8">line 8</a></code>
-    </div>
-    
-</h4>
-
-
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Уникальный ключ канала</p>
-    </div>
-    
-
-    <!--
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">String</span>
-
-
-            </li>
-        </ul>
-    
-    -->
-
-    
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-    
-</dd>
-
-        </dl>
-    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -258,14 +175,14 @@
 
 <dt>
     
-        <h4 class="name" id="channelSend">
+        <h4 class="name" id="createAPIWatchers">
             
-                <span class="type-signature"></span>channelSend<span class="signature">(channelId, data)</span><span class="type-signature"></span>
+                <span class="type-signature"></span>createAPIWatchers<span class="signature">(channelNames)</span><span class="type-signature"></span>
                 
             
             <div class="container-source members">
-                <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-                <code><a href="api_ChannelBusAPI.js.html#line36">line 36</a></code>
+                <code><a href="channelBus_ChannelBusManager.js.html">channelBus/ChannelBusManager.js</a></code>,
+                <code><a href="channelBus_ChannelBusManager.js.html#line66">line 66</a></code>
             </div>
             
         </h4>
@@ -277,7 +194,8 @@
 
     
     <div class="description">
-        <p>Отправить данные в канал.</p>
+        <p>Подписать каналы на обновления.
+Если канал впервые подписан, то он подписывается на сервере.</p>
     </div>
     
 
@@ -313,13 +231,13 @@
 
         <tr>
             
-                <td class="name"><code>channelId</code></td>
+                <td class="name"><code>channelNames</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Array.&lt;String></span>
 
 
             
@@ -329,30 +247,7 @@
 
             
 
-            <td class="description last"><p>ID канала.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">any</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Данные которые необходимо записать в канал.</p></td>
+            <td class="description last"><p>Каналы которые нужно подписать на обнавления.</p></td>
         </tr>
 
     
@@ -420,14 +315,14 @@
 
 <dt>
     
-        <h4 class="name" id="channelUnwatch">
+        <h4 class="name" id="isAPIConnected">
             
-                <span class="type-signature"></span>channelUnwatch<span class="signature">(channelId, component)</span><span class="type-signature"></span>
+                <span class="type-signature"></span>isAPIConnected<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span>
                 
             
             <div class="container-source members">
-                <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-                <code><a href="api_ChannelBusAPI.js.html#line54">line 54</a></code>
+                <code><a href="channelBus_ChannelBusManager.js.html">channelBus/ChannelBusManager.js</a></code>,
+                <code><a href="channelBus_ChannelBusManager.js.html#line110">line 110</a></code>
             </div>
             
         </h4>
@@ -439,7 +334,116 @@
 
     
     <div class="description">
-        <p>Удалить просмотрщик канала.</p>
+        <p>Соединение с API есть и watcher'ы для каналов на сервере зарегистрированны</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">boolean</span>
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="removeAPIWatchers">
+            
+                <span class="type-signature"></span>removeAPIWatchers<span class="signature">(channelNames)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="channelBus_ChannelBusManager.js.html">channelBus/ChannelBusManager.js</a></code>,
+                <code><a href="channelBus_ChannelBusManager.js.html#line87">line 87</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Отписать каналы от обновления.
+Если число надсмотрщиков над каналом будет равно 0, то канал отписывается от сервера.</p>
     </div>
     
 
@@ -465,8 +469,6 @@
         
 
         
-        <th>Default</th>
-        
 
         <th class="last">Description</th>
     </tr>
@@ -477,13 +479,13 @@
 
         <tr>
             
-                <td class="name"><code>channelId</code></td>
+                <td class="name"><code>channelNames</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Array.&lt;String></span>
 
 
             
@@ -492,41 +494,8 @@
             
 
             
-                <td class="default">
-                
-                </td>
-            
 
-            <td class="description last"><p>ID канала.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>component</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">any</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    null
-                
-                </td>
-            
-
-            <td class="description last"><p>Компонент для которого был зарегистрирован слушатель канала.</p></td>
+            <td class="description last"><p>Каналы которые нужно отписать от обнавления.</p></td>
         </tr>
 
     
@@ -594,14 +563,14 @@
 
 <dt>
     
-        <h4 class="name" id="channelWatch">
+        <h4 class="name" id="updateWatchers">
             
-                <span class="type-signature"></span>channelWatch<span class="signature">(channelId, component)</span><span class="type-signature"></span>
+                <span class="type-signature"></span>updateWatchers<span class="signature">(component, channelsConfig)</span><span class="type-signature"></span>
                 
             
             <div class="container-source members">
-                <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-                <code><a href="api_ChannelBusAPI.js.html#line45">line 45</a></code>
+                <code><a href="channelBus_ChannelBusManager.js.html">channelBus/ChannelBusManager.js</a></code>,
+                <code><a href="channelBus_ChannelBusManager.js.html#line27">line 27</a></code>
             </div>
             
         </h4>
@@ -613,7 +582,8 @@
 
     
     <div class="description">
-        <p>Зарегистрировать просмотрщик канала.</p>
+        <p>Обновить каналы для компонента.
+Новые каналы подпишутся на сервере, старые отпишутся.</p>
     </div>
     
 
@@ -639,8 +609,6 @@
         
 
         
-        <th>Default</th>
-        
 
         <th class="last">Description</th>
     </tr>
@@ -651,40 +619,31 @@
 
         <tr>
             
-                <td class="name"><code>channelId</code></td>
+                <td class="name"><code>component</code></td>
             
 
             <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
             
             </td>
 
             
 
             
-                <td class="default">
-                
-                </td>
-            
 
-            <td class="description last"><p>ID канала.</p></td>
+            <td class="description last"><p>Компонент для которого обновляются каналы.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>component</code></td>
+                <td class="name"><code>channelsConfig</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">any</span>
+<span class="param-type">Array.&lt;СhannelsConfig></span>
 
 
             
@@ -693,14 +652,8 @@
             
 
             
-                <td class="default">
-                
-                    null
-                
-                </td>
-            
 
-            <td class="description last"><p>Компонент для которого регистрируется слушатель канала.</p></td>
+            <td class="description last"><p>Каналы которые нужно подписать на обнавления.</p></td>
         </tr>
 
     
@@ -788,7 +741,7 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'api.ChannelBusAPI_sub'.replace(/"/g, '_');
+        var id = 'channelBus.ChannelBusManager_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

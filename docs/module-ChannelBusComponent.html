@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Class: ChannelBusAPI | Pikonet Editor</title>
+    <title>Module: ChannelBusComponent | Pikonet Editor</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -46,10 +46,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="api.html">api</a>~</span>ChannelBusAPI<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2>ChannelBusComponent</h2>
         
-            <div class="class-description"><p>API для работы с данными каналов.</p></div>
+            
         
     
 </header>
@@ -59,22 +58,99 @@
         <div class="container-overview">
         
             
+                <div class="description"><p>Примеси для упрощения работы с данными из каналов</p></p></div></div> 
+
+<style>
+.container-overview {
+    display: none;
+}
+
+.main section article table td.name,
+.main section article table td.type,
+.main section article table td.attributes,
+.main section article table td.default {
+    max-width: none;
+}
+</style>
+
+
+
+
+<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-data">Data</h3>
+<div class="container-params">
+    <table class="params" data-jsdoc-vuejs="table-data">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Default value</th>
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+            <td class="name"><code>channels</code></td>
+            <td class="type"><span class="param-type">Object</span></td>
+            <td class="description">-</td>
+            <td class="description last">Данные из каналов.</td>
+        </tr>
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-computed">Computed</h3>
+<div class="container-params">
+    <table class="params" data-jsdoc-vuejs="table-computed">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr>
+            <td class="name"><code>channelsConfig</code></td>
+            <td class="type"><span class="param-type">Array.&lt;api.models.Channel></span></td>
+            <td class="description last">Конфигурация каналов.</td>
+        </tr>
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-event">Events</h3>
+<div class="container-params">
+    <table class="params" data-jsdoc-vuejs="table-event">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Payload Type</th>
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        </tbody>
+    </table>
+</div>
+
+
+<div class="container-overview"><div><p> 
+</div>
+            
+
+            
+                
 
 <dt>
-    
-        <h4 class="name" id="ChannelBusAPI">
-            
-                new <span class="type-signature"></span>ChannelBusAPI<span class="signature">()</span><span class="type-signature"></span>
-                
-            
-            <div class="container-source members">
-                <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-                <code><a href="api_ChannelBusAPI.js.html#line14">line 14</a></code>
-            </div>
-            
-        </h4>
-
-        
     
 </dt>
 <dd>
@@ -123,13 +199,6 @@
     
 
     
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Артём Каширин &lt;kshart@yandex.ru></li>
-        </ul>
-    </dd>
-    
 
     
 
@@ -149,6 +218,7 @@
 
 </dd>
 
+            
         
         </div>
     
@@ -166,604 +236,7 @@
     
 
     
-        <h3 class="subsection-title">Members</h3>
 
-        <dl>
-            
-
-<dt>
-<h4 class="name" id="connection">
-    <span class="type-signature"></span>connection<span class="type-signature"> :String</span>
-    
-    <div class="container-source members">
-        <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-        <code><a href="api_ChannelBusAPI.js.html#line8">line 8</a></code>
-    </div>
-    
-</h4>
-
-
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Уникальный ключ канала</p>
-    </div>
-    
-
-    <!--
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">String</span>
-
-
-            </li>
-        </ul>
-    
-    -->
-
-    
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-    
-</dd>
-
-        </dl>
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
-                
-
-<dt>
-    
-        <h4 class="name" id="channelSend">
-            
-                <span class="type-signature"></span>channelSend<span class="signature">(channelId, data)</span><span class="type-signature"></span>
-                
-            
-            <div class="container-source members">
-                <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-                <code><a href="api_ChannelBusAPI.js.html#line36">line 36</a></code>
-            </div>
-            
-        </h4>
-
-        
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Отправить данные в канал.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-
-    
-    <div class="container-params">
-        <h5>Parameters:</h5>
-        
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>channelId</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>ID канала.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">any</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Данные которые необходимо записать в канал.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-</dd>
-
-            
-                
-
-<dt>
-    
-        <h4 class="name" id="channelUnwatch">
-            
-                <span class="type-signature"></span>channelUnwatch<span class="signature">(channelId, component)</span><span class="type-signature"></span>
-                
-            
-            <div class="container-source members">
-                <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-                <code><a href="api_ChannelBusAPI.js.html#line54">line 54</a></code>
-            </div>
-            
-        </h4>
-
-        
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Удалить просмотрщик канала.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-
-    
-    <div class="container-params">
-        <h5>Parameters:</h5>
-        
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>channelId</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>ID канала.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>component</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">any</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    null
-                
-                </td>
-            
-
-            <td class="description last"><p>Компонент для которого был зарегистрирован слушатель канала.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-</dd>
-
-            
-                
-
-<dt>
-    
-        <h4 class="name" id="channelWatch">
-            
-                <span class="type-signature"></span>channelWatch<span class="signature">(channelId, component)</span><span class="type-signature"></span>
-                
-            
-            <div class="container-source members">
-                <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-                <code><a href="api_ChannelBusAPI.js.html#line45">line 45</a></code>
-            </div>
-            
-        </h4>
-
-        
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Зарегистрировать просмотрщик канала.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-
-    
-    <div class="container-params">
-        <h5>Parameters:</h5>
-        
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>channelId</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>ID канала.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>component</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">any</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    null
-                
-                </td>
-            
-
-            <td class="description last"><p>Компонент для которого регистрируется слушатель канала.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-</dd>
-
-            </dl>
     
 
     
@@ -788,7 +261,7 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'api.ChannelBusAPI_sub'.replace(/"/g, '_');
+        var id = 'module:ChannelBusComponent_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

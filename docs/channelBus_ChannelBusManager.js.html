@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Class: ChannelBusAPI | Pikonet Editor</title>
+    <title>Source: channelBus/ChannelBusManager.js | Pikonet Editor</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -41,737 +43,136 @@
 
 
 
-
-<section>
-
-<header>
-    
-        <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="api.html">api</a>~</span>ChannelBusAPI<span class="signature">()</span><span class="type-signature"></span></h2>
-        
-            <div class="class-description"><p>API для работы с данными каналов.</p></div>
-        
-    
-</header>
-
-<article>
-    
-        <div class="container-overview">
-        
-            
-
-<dt>
-    
-        <h4 class="name" id="ChannelBusAPI">
-            
-                new <span class="type-signature"></span>ChannelBusAPI<span class="signature">()</span><span class="type-signature"></span>
-                
-            
-            <div class="container-source members">
-                <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-                <code><a href="api_ChannelBusAPI.js.html#line14">line 14</a></code>
-            </div>
-            
-        </h4>
-
-        
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Артём Каширин &lt;kshart@yandex.ru></li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-</dd>
-
-        
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-
-        <dl>
-            
-
-<dt>
-<h4 class="name" id="connection">
-    <span class="type-signature"></span>connection<span class="type-signature"> :String</span>
-    
-    <div class="container-source members">
-        <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-        <code><a href="api_ChannelBusAPI.js.html#line8">line 8</a></code>
-    </div>
-    
-</h4>
-
-
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Уникальный ключ канала</p>
-    </div>
-    
-
-    <!--
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">String</span>
-
-
-            </li>
-        </ul>
-    
-    -->
-
-    
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-    
-</dd>
-
-        </dl>
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
-                
-
-<dt>
-    
-        <h4 class="name" id="channelSend">
-            
-                <span class="type-signature"></span>channelSend<span class="signature">(channelId, data)</span><span class="type-signature"></span>
-                
-            
-            <div class="container-source members">
-                <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-                <code><a href="api_ChannelBusAPI.js.html#line36">line 36</a></code>
-            </div>
-            
-        </h4>
-
-        
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Отправить данные в канал.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-
-    
-    <div class="container-params">
-        <h5>Parameters:</h5>
-        
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>channelId</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>ID канала.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">any</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Данные которые необходимо записать в канал.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-</dd>
-
-            
-                
-
-<dt>
-    
-        <h4 class="name" id="channelUnwatch">
-            
-                <span class="type-signature"></span>channelUnwatch<span class="signature">(channelId, component)</span><span class="type-signature"></span>
-                
-            
-            <div class="container-source members">
-                <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-                <code><a href="api_ChannelBusAPI.js.html#line54">line 54</a></code>
-            </div>
-            
-        </h4>
-
-        
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Удалить просмотрщик канала.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-
-    
-    <div class="container-params">
-        <h5>Parameters:</h5>
-        
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>channelId</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>ID канала.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>component</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">any</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    null
-                
-                </td>
-            
-
-            <td class="description last"><p>Компонент для которого был зарегистрирован слушатель канала.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-</dd>
-
-            
-                
-
-<dt>
-    
-        <h4 class="name" id="channelWatch">
-            
-                <span class="type-signature"></span>channelWatch<span class="signature">(channelId, component)</span><span class="type-signature"></span>
-                
-            
-            <div class="container-source members">
-                <code><a href="api_ChannelBusAPI.js.html">api/ChannelBusAPI.js</a></code>,
-                <code><a href="api_ChannelBusAPI.js.html#line45">line 45</a></code>
-            </div>
-            
-        </h4>
-
-        
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Зарегистрировать просмотрщик канала.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-
-    
-    <div class="container-params">
-        <h5>Parameters:</h5>
-        
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>channelId</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>ID канала.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>component</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">any</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    null
-                
-                </td>
-            
-
-            <td class="description last"><p>Компонент для которого регистрируется слушатель канала.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-</dd>
-
-            </dl>
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Класс для хранения настроек приема данных из ноды.
+ * @typedef {Object} СhannelsConfig
+ * @memberof channelBus
+ * @property {Function} onUpdate - Функция вызывается при обновлении канала.
+ * @property {String} channelName - Имя канала из которого нужно брать данные.
+ */
+
+/**
+ * Компонент для регистрации каналов, данные из которых нужно обновлять.
+ * @author Артём Каширин &lt;kshart@yandex.ru>
+ * @memberof channelBus
+ */
+export default class ChannelBusManager {
+  /**
+   * watcher'ы для каналов зарегистрированные на сервере
+   * @type {Map&lt;String, Number>}
+   */
+  apiWatchers = new Map()
+
+  /**
+   * watcher'ы для каналов от локальных компонентов
+   * @type {Map&lt;Object, Array&lt;String>>}
+   */
+  localWatchers = new Map()
+
+  /**
+   * Обновить каналы для компонента.
+   * Новые каналы подпишутся на сервере, старые отпишутся.
+   * @param component - Компонент для которого обновляются каналы.
+   * @param {Array&lt;СhannelsConfig>} channelsConfig - Каналы которые нужно подписать на обнавления.
+   */
+  updateWatchers (component, channelsConfig) {
+    console.log('updateWatchers', component, channelsConfig)
+    const oldWatchers = this.localWatchers.get(component)
+    this.localWatchers.set(component, channelsConfig)
+    const watchersToAdd = []
+    const watchersToDelete = []
+    for (let { channelName } of channelsConfig) {
+      if (!oldWatchers.includes(channelName)) {
+        watchersToAdd.push(channelName)
+      }
+    }
+    for (let channelName of oldWatchers) {
+      if (!channelsConfig.find(conf => conf.channelName === channelName)) {
+        watchersToDelete.push(channelName)
+      }
+    }
+    if (watchersToAdd.length > 0) {
+      this.createAPIWatchers(watchersToAdd)
+    }
+    if (watchersToDelete.length > 0) {
+      this.removeAPIWatchers(watchersToDelete)
+    }
+    // for (let { channelName, onUpdate } of channelsConfig) {
+    //   let i = 0
+    //   channelName = channelName + ''
+    //   setInterval(() => onUpdate(++i), 100)
+    // }
+  }
+
+  removeWatchers (component) {
+    console.log('removeWatchers', component)
+  }
+
+  /**
+   * Подписать каналы на обновления.
+   * Если канал впервые подписан, то он подписывается на сервере.
+   * @param {Array&lt;String>} channelNames - Каналы которые нужно подписать на обнавления.
+   */
+  createAPIWatchers (channelNames) {
+    const registerRemoteWatchers = []
+    for (let channelName of channelNames) {
+      const watchersCount = this.apiWatchers.get(channelName)
+      if (watchersCount) {
+        this.apiWatchers.set(channelName, watchersCount + 1)
+      } else {
+        registerRemoteWatchers.push(channelName)
+        this.apiWatchers.set(channelName, 1)
+      }
+    }
+    if (registerRemoteWatchers.length > 0) {
+      this.registerRemoteAPIWatchers(registerRemoteWatchers)
+    }
+  }
+
+  /**
+   * Отписать каналы от обновления.
+   * Если число надсмотрщиков над каналом будет равно 0, то канал отписывается от сервера.
+   * @param {Array&lt;String>} channelNames - Каналы которые нужно отписать от обнавления.
+   */
+  removeAPIWatchers (channelNames) {
+    const unregisterRemoteWatchers = []
+    for (let channelName of channelNames) {
+      const watchersCount = this.apiWatchers.get(channelName)
+      if (!watchersCount) {
+        console.error(`ChannelBusManager::removeAPIWatchers Ошибка при удаленни канала ${channelName}`)
+      } else if (watchersCount > 1) {
+        this.apiWatchers.set(channelName, watchersCount - 1)
+      } else {
+        unregisterRemoteWatchers.push(channelName)
+        this.apiWatchers.delete(channelName)
+      }
+    }
+    if (unregisterRemoteWatchers.length > 0) {
+      this.unregisterRemoteAPIWatchers(unregisterRemoteWatchers)
+    }
+  }
+
+  /**
+   * Соединение с API есть и watcher'ы для каналов на сервере зарегистрированны
+   * @return {boolean}
+   */
+  isAPIConnected () {
+    return true
+  }
+
+  registerRemoteAPIWatchers (channelNames) {
+    console.log('registerRemoteAPIWatchers', channelNames)
+  }
+  unregisterRemoteAPIWatchers (channelNames) {
+    console.log('unregisterRemoteAPIWatchers', channelNames)
+  }
+}
+</code></pre>
+        </article>
+    </section>
 
 
 
@@ -788,7 +189,7 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'api.ChannelBusAPI_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

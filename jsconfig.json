@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "target": "esnext",
+    "checkJs": true,
     "paths": {
       "@/*": ["src/*"]
     }
