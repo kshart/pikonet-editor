@@ -1,6 +1,7 @@
 /**
  * @module ChannelBusComponent
  * @description Примеси для упрощения работы с данными из каналов
+ * @memberof channelBus
  *
  * @vue-computed {Array<api.models.Channel>} channelsConfig - Конфигурация каналов.
  * @vue-data {Object} channels - Данные из каналов.
@@ -11,8 +12,8 @@ export default {
       channels: {}
     }
   },
-  mounted () {
-    // channelsMap.set(this, this.channelsConfig)
+  beforeDestroy () {
+    this.$channelBus.removeWatchers(this)
   },
   watch: {
     channelsConfig: {
@@ -25,7 +26,7 @@ export default {
             channelName,
             onUpdate: value => {
               this.channels[conf.propName] = value
-              console.log(`onUpdate ${conf.propNam} - ${value}`)
+              console.log(`onUpdate ${conf.propName} - ${value}`)
             }
           })
         }
@@ -33,7 +34,7 @@ export default {
         this.channels = {}
         for (let conf of this.channelsConfig) {
           const channelName = conf.nodeId + '/' + conf.channelName
-          this.channels[conf.propName] = this.$channelBus.data.get(channelName)
+          this.$set(this.channels, conf.propName, this.$channelBus.data.get(channelName))
         }
       }
     }

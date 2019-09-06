@@ -15,7 +15,7 @@ export default class ChannelBusManager {
   constructor ({ api }) {
     /**
      * watcher'ы для каналов от локальных компонентов.
-     * @type {Map<Object, Array<СhannelsConfig>>}
+     * @type {Map<any, Array<СhannelsConfig>>}
      */
     this.localWatchers = new Map()
 
@@ -27,7 +27,7 @@ export default class ChannelBusManager {
 
     /**
      * Данные каналов.
-     * @type {Map<String, object>}
+     * @type {Map<String, any>}
      */
     this.data = new Map()
 
@@ -69,8 +69,17 @@ export default class ChannelBusManager {
     }
   }
 
+  /**
+   * Отписать каналы компонента, от обновления.
+   * @param component - Компонент для которого обновляются каналы.
+   */
   removeWatchers (component) {
     console.log('removeWatchers', component)
+    const oldWatcherConfigs = this.localWatchers.get(component)
+    if (oldWatcherConfigs) {
+      this.localWatchers.delete(component)
+      this.removeServerWatchers(oldWatcherConfigs)
+    }
   }
 
   /**
@@ -124,7 +133,7 @@ export default class ChannelBusManager {
 
   /**
    * Событие, обновления данных в канале.
-   * @param {object} params - В.
+   * @param {Object} params - В.
    */
   onNodeChannelUpdate ({ params: { id, data } }) {
     const watchers = this.serverWatchers.get(id)
