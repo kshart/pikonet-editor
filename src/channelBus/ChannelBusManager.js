@@ -12,17 +12,32 @@
  * @memberof channelBus
  */
 export default class ChannelBusManager {
-  /**
-   * watcher'ы для каналов зарегистрированные на сервере
-   * @type {Map<String, Number>}
-   */
-  apiWatchers = new Map()
+  constructor ({ api }) {
+    /**
+     * watcher'ы для каналов от локальных компонентов.
+     * @type {Map<Object, Array<СhannelsConfig>>}
+     */
+    this.localWatchers = new Map()
 
-  /**
-   * watcher'ы для каналов от локальных компонентов
-   * @type {Map<Object, Array<String>>}
-   */
-  localWatchers = new Map()
+    /**
+     * watcher'ы для каналов зарегистрированные на сервере.
+     * @type {Map<String, Set<Function>>}
+     */
+    this.serverWatchers = new Map()
+
+    /**
+     * Данные каналов.
+     * @type {Map<String, object>}
+     */
+    this.data = new Map()
+
+    /**
+     * Соединения с сервером.
+     * @type {api.Api}
+     */
+    this.api = api
+    this.api.channelBus.on('nodeChannelUpdate', event => this.onNodeChannelUpdate(event))
+  }
 
   /**
    * Обновить каналы для компонента.
@@ -32,31 +47,26 @@ export default class ChannelBusManager {
    */
   updateWatchers (component, channelsConfig) {
     console.log('updateWatchers', component, channelsConfig)
-    const oldWatchers = this.localWatchers.get(component)
+    const oldWatcherConfigs = this.localWatchers.get(component) || []
     this.localWatchers.set(component, channelsConfig)
     const watchersToAdd = []
     const watchersToDelete = []
-    for (let { channelName } of channelsConfig) {
-      if (!oldWatchers.includes(channelName)) {
-        watchersToAdd.push(channelName)
+    for (let channelConfig of channelsConfig) {
+      if (!oldWatcherConfigs.find(conf => conf.channelName === channelConfig.channelName)) {
+        watchersToAdd.push(channelConfig)
       }
     }
-    for (let channelName of oldWatchers) {
-      if (!channelsConfig.find(conf => conf.channelName === channelName)) {
-        watchersToDelete.push(channelName)
+    for (let channelConfig of oldWatcherConfigs) {
+      if (!channelsConfig.find(conf => conf.channelName === channelConfig.channelName)) {
+        watchersToDelete.push(channelConfig)
       }
     }
     if (watchersToAdd.length > 0) {
-      this.createAPIWatchers(watchersToAdd)
+      this.createServerWatchers(watchersToAdd)
     }
     if (watchersToDelete.length > 0) {
-      this.removeAPIWatchers(watchersToDelete)
+      this.removeServerWatchers(watchersToDelete)
     }
-    // for (let { channelName, onUpdate } of channelsConfig) {
-    //   let i = 0
-    //   channelName = channelName + ''
-    //   setInterval(() => onUpdate(++i), 100)
-    // }
   }
 
   removeWatchers (component) {
@@ -66,59 +76,65 @@ export default class ChannelBusManager {
   /**
    * Подписать каналы на обновления.
    * Если канал впервые подписан, то он подписывается на сервере.
-   * @param {Array<String>} channelNames - Каналы которые нужно подписать на обнавления.
+   * @param {Array<СhannelsConfig>} channelsConfig - Каналы которые нужно подписать на обновления.
    */
-  createAPIWatchers (channelNames) {
-    const registerRemoteWatchers = []
-    for (let channelName of channelNames) {
-      const watchersCount = this.apiWatchers.get(channelName)
-      if (watchersCount) {
-        this.apiWatchers.set(channelName, watchersCount + 1)
+  createServerWatchers (channelsConfig) {
+    const watchChannelNames = []
+    for (let { channelName, onUpdate } of channelsConfig) {
+      if (this.serverWatchers.has(channelName)) {
+        const watchers = this.serverWatchers.get(channelName)
+        watchers.add(onUpdate)
       } else {
-        registerRemoteWatchers.push(channelName)
-        this.apiWatchers.set(channelName, 1)
+        const watchers = new Set()
+        watchers.add(onUpdate)
+        this.serverWatchers.set(channelName, watchers)
+        watchChannelNames.push(channelName)
       }
     }
-    if (registerRemoteWatchers.length > 0) {
-      this.registerRemoteAPIWatchers(registerRemoteWatchers)
+    if (watchChannelNames.length > 0) {
+      this.api.channelBus.channelsWatch(watchChannelNames)
     }
+    console.log('createServerWatchers', this)
   }
 
   /**
    * Отписать каналы от обновления.
    * Если число надсмотрщиков над каналом будет равно 0, то канал отписывается от сервера.
-   * @param {Array<String>} channelNames - Каналы которые нужно отписать от обнавления.
+   * @param {Array<СhannelsConfig>} channelsConfig - Каналы которые нужно отписать от обновления.
    */
-  removeAPIWatchers (channelNames) {
-    const unregisterRemoteWatchers = []
-    for (let channelName of channelNames) {
-      const watchersCount = this.apiWatchers.get(channelName)
-      if (!watchersCount) {
-        console.error(`ChannelBusManager::removeAPIWatchers Ошибка при удаленни канала ${channelName}`)
-      } else if (watchersCount > 1) {
-        this.apiWatchers.set(channelName, watchersCount - 1)
+  removeServerWatchers (channelsConfig) {
+    const unwatchChannelNames = []
+    for (let { channelName, onUpdate } of channelsConfig) {
+      const watchers = this.serverWatchers.get(channelName)
+      if (!watchers) {
+        console.error(`ChannelBusManager::removeServerWatchers Ошибка при удаленни канала ${channelName}`)
       } else {
-        unregisterRemoteWatchers.push(channelName)
-        this.apiWatchers.delete(channelName)
+        watchers.delete(onUpdate)
+        if (watchers.size < 1) {
+          this.serverWatchers.delete(channelName)
+          unwatchChannelNames.push(channelName)
+        }
       }
     }
-    if (unregisterRemoteWatchers.length > 0) {
-      this.unregisterRemoteAPIWatchers(unregisterRemoteWatchers)
+    if (unwatchChannelNames.length > 0) {
+      this.api.channelBus.channelsUnwatch(unwatchChannelNames)
     }
+    console.log('removeServerWatchers', this)
   }
 
   /**
-   * Соединение с API есть и watcher'ы для каналов на сервере зарегистрированны
-   * @return {boolean}
+   * Событие, обновления данных в канале.
+   * @param {object} params - В.
    */
-  isAPIConnected () {
-    return true
-  }
-
-  registerRemoteAPIWatchers (channelNames) {
-    console.log('registerRemoteAPIWatchers', channelNames)
-  }
-  unregisterRemoteAPIWatchers (channelNames) {
-    console.log('unregisterRemoteAPIWatchers', channelNames)
+  onNodeChannelUpdate ({ params: { id, data } }) {
+    const watchers = this.serverWatchers.get(id)
+    if (!watchers) {
+      console.log(`onNodeChannelUpdate(${this.data})`)
+      return
+    }
+    this.data.set(id, data)
+    for (let watcher of watchers) {
+      watcher(data)
+    }
   }
 }

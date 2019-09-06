@@ -12,9 +12,10 @@
  * @property {String} channelName - Имя канала из которого нужно брать данные.
  */
 
+import api from '@/api/index'
 import ChannelBusManager from './ChannelBusManager'
 
-const channelBusManager = new ChannelBusManager()
+const channelBusManager = new ChannelBusManager({ api })
 
 export default {
   install (Vue) {

@@ -20,18 +20,20 @@ export default {
       handler () {
         const config = []
         for (let conf of this.channelsConfig) {
-          const channelName = conf.nodeId + '#' + conf.channelName
+          const channelName = conf.nodeId + '/' + conf.channelName
           config.push({
             channelName,
-            onUpdate (value) {
-              console.log(`onUpdate ${channelName} - ${value}`)
+            onUpdate: value => {
+              this.channels[conf.propName] = value
+              console.log(`onUpdate ${conf.propNam} - ${value}`)
             }
           })
         }
         this.$channelBus.updateWatchers(this, config)
         this.channels = {}
         for (let conf of this.channelsConfig) {
-          this.channels[conf.propName] = 0
+          const channelName = conf.nodeId + '/' + conf.channelName
+          this.channels[conf.propName] = this.$channelBus.data.get(channelName)
         }
       }
     }

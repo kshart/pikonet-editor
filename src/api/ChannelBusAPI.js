@@ -5,16 +5,15 @@
  */
 export default class ChannelBusAPI {
   constructor ({ connection }) {
-    /**
-     * Уникальный ключ канала
-     * @type {String}
-     */
     this.connection = connection
 
-    this.registredChannels = new Map()
     this.channelsData = new Map()
   }
 
+  /**
+   * Соединение с API есть и watcher'ы для каналов на сервере зарегистрированны
+   * @return {boolean}
+   */
   get connected () {
     return this.connection.connected
   }
@@ -30,33 +29,32 @@ export default class ChannelBusAPI {
   getChannelList (nodeId) {
     return this.connection.send('nodeGetChannelList', { nodeId }, { waitResult: true })
   }
+
   channelRead (channelId) {
   }
 
   /**
    * Отправить данные в канал.
-   * @param {String} channelId - ID канала.
+   * @param {String} channelName - ID канала.
    * @param {any} data - Данные которые необходимо записать в канал.
    */
-  channelSend (channelId, data) {
-    console.log(channelId, data)
+  channelSend (channelName, data) {
+    console.log(channelName, data)
   }
 
   /**
    * Зарегистрировать просмотрщик канала.
-   * @param {String} channelId - ID канала.
-   * @param {any} component - Компонент для которого регистрируется слушатель канала.
+   * @param {Array<String>} channelNames - ID канала.
    */
-  channelWatch (channelId, component = null) {
-    console.log(channelId, component)
+  channelsWatch (channelNames) {
+    this.connection.send('nodeChannelsWatch', { channelNames })
   }
 
   /**
    * Удалить просмотрщик канала.
-   * @param {String} channelId - ID канала.
-   * @param {any} component - Компонент для которого был зарегистрирован слушатель канала.
+   * @param {Array<String>} channelNames - ID канала.
    */
-  channelUnwatch (channelId, component = null) {
-    console.log(channelId, component)
+  channelsUnwatch (channelNames) {
+    console.log('channelsUnwatch', channelNames)
   }
 }
