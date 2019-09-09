@@ -34,12 +34,12 @@ export default class ChannelBusAPI {
   }
 
   /**
-   * Отправить данные в канал.
-   * @param {String} channelName - ID канала.
-   * @param {any} data - Данные которые необходимо записать в канал.
+   * Отправить данные в каналы.
+   * @param {Object<String, any>} channelsData - Каналы и данные которые нужно записать.
    */
-  channelSend (channelName, data) {
-    console.log(channelName, data)
+  sendChannelsData (channelsData) {
+    console.log('sendChannelsData', { channelsData })
+    this.connection.send('nodeChannelsSendData', { channelsData })
   }
 
   /**

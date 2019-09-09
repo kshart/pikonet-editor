@@ -70,6 +70,14 @@ export default class ChannelBusManager {
   }
 
   /**
+   * Отправить данные в каналы.
+   * @param {Object<String, any>} channelsData - Каналы и данные которые нужно записать.
+   */
+  setChannelsData (channelsData) {
+    this.api.channelBus.sendChannelsData(channelsData)
+  }
+
+  /**
    * Отписать каналы компонента, от обновления.
    * @param component - Компонент для которого обновляются каналы.
    */

@@ -14,7 +14,7 @@
 <script>
 import Link from '@/editor/Document/Link'
 import BaseShape from '@/editor/BaseShape'
-import ChannelBusClient from '@/channelBus/ChannelBusComponent'
+import ChannelBusComponent from '@/channelBus/ChannelBusComponent'
 
 /**
  * @description Нода для статического числа.
@@ -28,7 +28,7 @@ export default {
     Link,
     BaseShape
   },
-  mixins: [ ChannelBusClient ],
+  mixins: [ ChannelBusComponent ],
   props: ['nodeConfig'],
   computed: {
     channelsConfig () {
