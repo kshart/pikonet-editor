@@ -44,10 +44,10 @@ export default class ChannelBusAPI {
 
   /**
    * Зарегистрировать просмотрщик канала.
-   * @param {Array<String>} channelNames - ID канала.
+   * @param {Array<String>} channelsId - ID канала.
    */
-  channelsWatch (channelNames) {
-    this.connection.send('nodeChannelsWatch', { channelNames })
+  channelsWatch (channelsId) {
+    this.connection.send('nodeChannelsWatch', { channelsId })
   }
 
   /**
