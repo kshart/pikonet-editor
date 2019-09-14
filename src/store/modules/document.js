@@ -87,6 +87,7 @@ const actions = {
       // commit(types.UPDATE_NODE_CONFIG, event.params.nodeIds)
     })
     api.manager.on('nodeDeleted', event => {
+      console.log('nodeDeleted', event)
       commit(types.REMOVE_NODE_CONFIG, event.params.id)
     })
     /* updateTimer = */ setInterval(() => {
