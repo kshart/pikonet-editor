@@ -43,18 +43,18 @@ export default class ChannelBusAPI {
   }
 
   /**
-   * Зарегистрировать просмотрщик канала.
-   * @param {Array<String>} channelsId - ID канала.
+   * Зарегистрировать просмотрщики каналов.
+   * @param {Array<String>} channelsId - ID каналов.
    */
   channelsWatch (channelsId) {
     this.connection.send('nodeChannelsWatch', { channelsId })
   }
 
   /**
-   * Удалить просмотрщик канала.
-   * @param {Array<String>} channelNames - ID канала.
+   * Удалить просмотрщики каналов.
+   * @param {Array<String>} channelsId - ID каналов.
    */
-  channelsUnwatch (channelNames) {
-    console.log('channelsUnwatch', channelNames)
+  channelsUnwatch (channelsId) {
+    this.connection.send('nodeChannelsUnwatch', { channelsId })
   }
 }
