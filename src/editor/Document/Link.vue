@@ -12,10 +12,6 @@ import { mapActions } from 'vuex'
 export default {
   name: 'Link',
   props: ['id'],
-  data () {
-    return {
-    }
-  },
   mounted () {
     this.mountLinkPoint({
       id: this.id,

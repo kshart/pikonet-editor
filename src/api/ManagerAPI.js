@@ -35,11 +35,11 @@ export default class ManagerAPI {
   linkGetList () {
     this.connection.send('linkGetList')
   }
-  linkCreate (link) {
-    this.connection.send('linkCreate', { link })
+  linksCreate (links) {
+    links.forEach(link => this.connection.send('linkCreate', { link }))
   }
-  linkDelete (id) {
-    this.connection.send('linkDelete', { id })
+  linkDelete ({ from, to }) {
+    this.connection.send('linkDelete', { from, to })
   }
   channelWatch (channel) {
     this.connection.send('channelWatch', { channel })

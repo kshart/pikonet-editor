@@ -3,12 +3,14 @@ import App from './App'
 import router from './router'
 import store from './store/index'
 import ChannelBus from './channelBus/index'
+import ContextMenu from './ContextMenu/index'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 Vue.config.productionTip = false
 Vue.config.performance = true
 
 Vue.use(ChannelBus)
+Vue.use(ContextMenu)
 Vue.component('FontAwesomeIcon', FontAwesomeIcon)
 
 new Vue({

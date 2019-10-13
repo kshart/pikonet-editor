@@ -1,3 +1,7 @@
+import ManagerAPI from './ManagerAPI'
+import ChannelBusAPI from './ChannelBusAPI'
+import WebSocketConnection from './WebSocketConnection'
+
 /**
  * Соединение с API.
  * @author Артём Каширин <kshart@yandex.ru>
@@ -19,10 +23,12 @@ export default class Api {
     })
   }
 
-  constructor ({ modules }) {
-    this.modules = modules
-    for (let moduleName in modules) {
-      this[moduleName] = modules[moduleName]
-    }
+  constructor ({ manager, channelBus }) {
+    this.manager = new ManagerAPI({
+      connection: new WebSocketConnection(manager)
+    })
+    this.channelBus = new ChannelBusAPI({
+      connection: new WebSocketConnection(channelBus)
+    })
   }
 }

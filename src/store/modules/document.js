@@ -61,7 +61,11 @@ const actions = {
    *
    * @param {object} context
    */
-  init ({ state, commit }) {
+  init ({ state, commit, dispatch }) {
+    dispatch('links/init')
+    if (api.manager.connected) {
+      api.manager.nodeGetList()
+    }
     api.manager.on('open', event => {
       commit(types.UPDATE_RETRY_COUNT, { loadingRetryCount: 0 })
       commit(types.UPDATE_CONNECTION_STATE, { isConnected: true })
@@ -76,18 +80,16 @@ const actions = {
       })
     })
     api.manager.on('nodeList', event => {
-      console.log(event.params.nodes)
       commit(types.INIT_NODE_CONFIGS, event.params.nodes)
     })
     api.manager.on('nodeCreated', event => {
       commit(types.APPEND_NODE_CONFIG, event.params.node)
     })
     api.manager.on('nodeUpdated', event => {
-      console.log('NODE_UPDATED')
+      console.log('NODE_UPDATED TODO: сделать')
       // commit(types.UPDATE_NODE_CONFIG, event.params.nodeIds)
     })
     api.manager.on('nodeDeleted', event => {
-      console.log('nodeDeleted', event)
       commit(types.REMOVE_NODE_CONFIG, event.params.id)
     })
     /* updateTimer = */ setInterval(() => {
