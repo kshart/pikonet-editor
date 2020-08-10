@@ -27,7 +27,7 @@ import items from '@/nodes/index'
 import LinksLayer from './LinksLayer'
 
 const componentItems = {}
-for (let key in items) {
+for (const key in items) {
   const item = items[key]
   componentItems[key + 'Shape'] = item.shape
 }
@@ -76,7 +76,7 @@ export default {
       let y = null
       let x2 = null
       let y2 = null
-      for (let nodeConfig of this.document.nodeConfigs) {
+      for (const nodeConfig of this.document.nodeConfigs) {
         if (this.$refs['nodeConfig' + nodeConfig.id]) {
           const $vue = this.$refs['nodeConfig' + nodeConfig.id][0]
           const nodeBbox = $vue.$el.getBoundingClientRect()

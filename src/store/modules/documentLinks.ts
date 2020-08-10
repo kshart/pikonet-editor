@@ -1,23 +1,35 @@
 import api from '@/api/index'
+import Link from '@/api/models/Link'
+import { GetterTree, MutationTree, ActionTree } from 'vuex'
 
-const types = {
-  INIT_LINK_CONFIGS: 'INIT_LINK_CONFIGS',
-  APPEND_LINK_CONFIG: 'APPEND_LINK_CONFIG',
-  REMOVE_LINK_CONFIG: 'REMOVE_LINK_CONFIG',
-  FLUSH_UPDATED_LINKS: 'FLUSH_UPDATED_LINKS',
-  BEGIN_CREATE_LINK: 'BEGIN_CREATE_LINK',
-  UPDATE_CREATE_LINK: 'UPDATE_CREATE_LINK',
-  END_CREATE_LINK: 'END_CREATE_LINK'
+/**
+ * @see <Link>
+ */
+export interface LinkCreateConfig {
+  from: string;
+  to: string;
 }
 
-const state = {
-  isUpdateIds: [],
-  createLink: {
+export enum types {
+  INIT_LINK_CONFIGS = 'INIT_LINK_CONFIGS',
+  APPEND_LINK_CONFIG = 'APPEND_LINK_CONFIG',
+  REMOVE_LINK_CONFIG = 'REMOVE_LINK_CONFIG',
+  FLUSH_UPDATED_LINKS = 'FLUSH_UPDATED_LINKS',
+  BEGIN_CREATE_LINK = 'BEGIN_CREATE_LINK',
+  UPDATE_CREATE_LINK = 'UPDATE_CREATE_LINK',
+  END_CREATE_LINK = 'END_CREATE_LINK'
+}
+
+class State {
+  isUpdateIds: Array<LinkCreateConfig> = []
+
+  createLink = {
     enabled: false,
-    from: null,
-    to: null
-  },
-  items: []
+    from: null as string | null,
+    to: null as string | null
+  }
+
+  items: Array<Link> = []
 }
 
 const linkPointComponents = new Map()
@@ -25,32 +37,36 @@ const linkPointComponents = new Map()
 const actions = {
   /**
    * Инициализация модуля
-   *
-   * @param {object} context
    */
   init ({ state, commit }) {
     if (api.manager.connected) {
       api.manager.linkGetList()
     }
-    api.manager.on('open', event => api.manager.linkGetList())
+    api.manager.on('open', () => api.manager.linkGetList())
     api.manager.on('linkList', event => {
-      commit(types.INIT_LINK_CONFIGS, event.params.links)
+      commit(types.INIT_LINK_CONFIGS, event.detail.params.links)
     })
     api.manager.on('linkCreated', event => {
-      commit(types.APPEND_LINK_CONFIG, event.params.link)
+      commit(types.APPEND_LINK_CONFIG, event.detail.params.link)
     })
-    api.manager.on('linkUpdated', event => {
+    api.manager.on('linkUpdated', () => {
       console.log('LINK_UPDATED TODO: сделать')
     })
     api.manager.on('linkDeleted', event => {
       commit(types.REMOVE_LINK_CONFIG, {
-        from: event.params.from,
-        to: event.params.to
+        from: event.detail.params.from,
+        to: event.detail.params.to
       })
     })
     /* updateTimer = */ setInterval(() => {
       if (api.manager.connected && state.isUpdateIds.length > 0) {
-        const links = state.isUpdateIds.map(({ from, to }) => state.items.find(conf => conf.from === from && conf.to === to))
+        const links = []
+        for (const { from, to } of state.isUpdateIds) {
+          const link = state.items.find(conf => conf.from === from && conf.to === to)
+          if (link) {
+            links.push(link)
+          }
+        }
         api.manager.linksCreate(links)
         commit(types.FLUSH_UPDATED_LINKS)
       }
@@ -59,69 +75,52 @@ const actions = {
   /**
    * Регистрация vue компонента как линка
    *
-   * @param {String} id - уникальный ключ соединения
+   * @param {string} id - уникальный ключ соединения
    * @param {VueComponent} $vue - компонент
    */
-  mountLinkPoint ({ commit }, { id, $vue }) {
+  mountLinkPoint (context, { id, $vue }) {
     linkPointComponents.set(id, $vue)
   },
 
   /**
    * Удалить линк/vue компонент из зарегистированных
    *
-   * @param {String} id - уникальный ключ соединения
+   * @param {string} id - уникальный ключ соединения
    * @param {VueComponent} $vue - компонент
    */
-  dismountLinkPoint ({ commit }, { id, $vue }) {
+  dismountLinkPoint (context, { id, $vue }) {
+    console.error('call dismountLinkPoint', id, $vue)
     linkPointComponents.delete(id)
   },
 
   /**
-   * Начало создания соединения
-   *
-   * @param {ActionContext} [vuexContext]
-   * @param {Object} payload
-   * @param {String} payload.from - начало соединения
-   * @param {String} payload.to - конец соединения
+   * Начало создания соединения.
    */
-  beginCreateLink ({ commit }, { from, to }) {
-    commit(types.BEGIN_CREATE_LINK, { from, to })
+  beginCreateLink ({ commit }, link: LinkCreateConfig) {
+    commit(types.BEGIN_CREATE_LINK, link)
   },
 
   /**
-   * Обновление параметров создания соединения
-   *
-   * @param {ActionContext} [vuexContext]
-   * @param {Object} payload
-   * @param {String} payload.from - начало соединения
+   * Обновление параметров создания соединения.
    */
-  updateCreateLink ({ commit }, { from }) {
-    commit(types.UPDATE_CREATE_LINK, { from })
+  updateCreateLink ({ commit }, link: LinkCreateConfig) {
+    commit(types.UPDATE_CREATE_LINK, link)
   },
 
   /**
    * Конец создания соединения
-   *
-   * @param {ActionContext} [vuexContext]
-   * @param {?Object} payload
-   * @param {String} payload.to - конец соединения
    */
-  endCreateLink ({ commit }, payload) {
-    commit(types.END_CREATE_LINK, payload)
+  endCreateLink ({ commit }, link: LinkCreateConfig) {
+    commit(types.END_CREATE_LINK, link)
   },
 
   /**
    * Удалить соединение
-   *
-   * @param {Object} context
-   * @param {Object} payload
-   * @param {String} payload.from
-   * @param {String} payload.to
    */
-  removeLinkConfig ({ commit }, { from, to }) {
-    api.manager.linkDelete({ from, to })
+  removeLinkConfig (context, link: Link) {
+    api.manager.linkDelete(link)
   }
-}
+} as ActionTree<State, null>
 
 const getters = {
   /**
@@ -129,10 +128,10 @@ const getters = {
    *
    * @return {Map<VueComponent>} vue компоненты
    */
-  getLinkPoints: state => {
+  getLinkPoints: () => {
     return linkPointComponents
   }
-}
+} as GetterTree<State, null>
 
 const mutations = {
   [types.INIT_LINK_CONFIGS] (state, items) {
@@ -141,8 +140,8 @@ const mutations = {
   [types.APPEND_LINK_CONFIG] (state, linkConfig) {
     state.items.push(linkConfig)
   },
-  [types.REMOVE_LINK_CONFIG] (state, { from, to }) {
-    const index = state.items.findIndex(conf => conf.from === from && conf.to === to)
+  [types.REMOVE_LINK_CONFIG] (state, link: Link) {
+    const index = state.items.findIndex(conf => conf.from === link.from && conf.to === link.to)
     if (index >= 0) {
       state.items.splice(index, 1)
     }
@@ -150,22 +149,22 @@ const mutations = {
   [types.FLUSH_UPDATED_LINKS] (state) {
     state.isUpdateIds = []
   },
-  [types.BEGIN_CREATE_LINK] (state, { from, to }) {
+  [types.BEGIN_CREATE_LINK] (state, link: LinkCreateConfig) {
     state.createLink.enabled = true
-    state.createLink.from = from
+    state.createLink.from = link.from
   },
-  [types.UPDATE_CREATE_LINK] (state, { from, to }) {
+  [types.UPDATE_CREATE_LINK] (state, link: LinkCreateConfig) {
     state.createLink.enabled = false
-    if (from) {
-      state.createLink.from = from
+    if (link.from) {
+      state.createLink.from = link.from
     }
-    if (to) {
-      state.createLink.to = to
+    if (link.to) {
+      state.createLink.to = link.to
     }
   },
-  [types.END_CREATE_LINK] (state, params) {
-    if (params) {
-      state.createLink.to = params.to
+  [types.END_CREATE_LINK] (state, link: LinkCreateConfig) {
+    if (link) {
+      state.createLink.to = link.to
     }
     const oldLink = state.items.find(link => link.from === state.createLink.from && link.to === state.createLink.to)
     if (!oldLink && state.createLink.from && state.createLink.to && state.createLink.from !== state.createLink.to) {
@@ -189,12 +188,12 @@ const mutations = {
       state.items.splice(index, 1)
     }
   }
-}
+} as MutationTree<State>
 
 export default {
   namespaced: true,
   mutations,
   getters,
   actions,
-  state
+  state: new State()
 }

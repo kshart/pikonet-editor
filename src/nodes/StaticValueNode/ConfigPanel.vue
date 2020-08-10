@@ -6,15 +6,18 @@
       <h4>Каналы:</h4>
       <div v-for="channel of nodeParams.channels" :key="channel.id">
         {{ channel.name }} - {{ channel.id }}
-        <input :value="channels[channel.name]" @change="setChannelData(channel.name, $event.target.value)" />
+        <input
+          :value="channels[channel.name]"
+          @change="setChannelData(channel.name, $event.target.value)"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
-import ChannelBusComponent from '@/channelBus/ChannelBusComponent'
+import { mapState, mapMutations } from 'vuex';
+import ChannelBusComponent from '@/channelBus/ChannelBusComponent';
 
 /**
  * @module StaticValueNode-ConfigPanel
@@ -27,53 +30,53 @@ import ChannelBusComponent from '@/channelBus/ChannelBusComponent'
  */
 export default {
   name: 'StaticValueNode-ConfigPanel',
-  mixins: [ ChannelBusComponent ],
-  data () {
+  mixins: [ChannelBusComponent],
+  data() {
     return {
-      nodeParams: null
-    }
+      nodeParams: null,
+    };
   },
   computed: {
     value: {
-      get () {
-        return this.node.value
+      get() {
+        return this.node.value;
       },
-      set (value) {
+      set(value) {
         if (!this.node) {
-          return
+          return;
         }
         this.UPDATE_NODE_CONFIG({
           id: this.node.id,
-          callback: nodeConfig => {
-            this.$set(nodeConfig, 'value', value)
-          }
-        })
-      }
+          callback: (nodeConfig) => {
+            this.$set(nodeConfig, 'value', value);
+          },
+        });
+      },
     },
-    channelsConfig () {
+    channelsConfig() {
       if (!this.nodeParams) {
-        return []
+        return [];
       }
       return this.nodeParams.channels.map(({ name, id }) => ({
         propName: name,
         nodeId: this.nodeParams.nodeId,
-        channelName: name
-      }))
+        channelName: name,
+      }));
     },
     ...mapState('document', {
-      node: state => state.nodeConfigs.find(node => node.id === state.nodeIdToConfigure)
-    })
+      node: (state) => state.nodeConfigs.find((node) => node.id === state.nodeIdToConfigure),
+    }),
   },
-  mounted () {
+  mounted() {
     this.$api.channelBus.getChannelList(this.node.id)
-      .then(nodeParams => {
-        this.nodeParams = nodeParams
-      })
+      .then((nodeParams) => {
+        this.nodeParams = nodeParams;
+      });
   },
   methods: {
-    ...mapMutations('document', ['UPDATE_NODE_CONFIG'])
-  }
-}
+    ...mapMutations('document', ['UPDATE_NODE_CONFIG']),
+  },
+};
 </script>
 
 <style scoped>

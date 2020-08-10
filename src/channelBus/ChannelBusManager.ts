@@ -1,10 +1,27 @@
+import Api from '@/api/Api'
+
 /**
  * Класс для хранения настроек приема данных из ноды.
- * @typedef {Object} СhannelsConfig
- * @memberof channelBus
- * @property {Function} onUpdate - Функция вызывается при обновлении канала.
- * @property {String} channelName - Имя канала из которого нужно брать данные.
  */
+export interface СhannelsConfig {
+  /**
+   * Функция вызывается при обновлении канала.
+   * @param data - Данные канала.
+   */
+  onUpdate(data: unknown): void;
+
+  /**
+   * Имя канала из которого нужно брать данные.
+   */
+  channelName: string;
+}
+
+interface EventChannelUpdate {
+  params: {
+    id: string;
+    data: unknown;
+  };
+}
 
 /**
  * Компонент для регистрации каналов, данные из которых нужно обновлять.
@@ -12,51 +29,49 @@
  * @memberof channelBus
  */
 export default class ChannelBusManager {
-  constructor ({ api }) {
-    /**
-     * watcher'ы для каналов от локальных компонентов.
-     * @type {Map<any, Array<СhannelsConfig>>}
-     */
-    this.localWatchers = new Map()
+  /**
+   * watcher'ы для каналов от локальных компонентов.
+   */
+  localWatchers = new Map<unknown, Array<СhannelsConfig>>()
 
-    /**
-     * watcher'ы для каналов зарегистрированные на сервере.
-     * @type {Map<String, Set<Function>>}
-     */
-    this.serverWatchers = new Map()
+  /**
+   * watcher'ы для каналов зарегистрированные на сервере.
+   */
+  serverWatchers = new Map<string, Set<Function>>()
 
-    /**
-     * Данные каналов.
-     * @type {Map<String, any>}
-     */
-    this.data = new Map()
+  /**
+   * Данные каналов.
+   */
+  data = new Map<string, unknown>()
 
-    /**
-     * Соединения с сервером.
-     * @type {api.Api}
-     */
+  /**
+   * Соединения с сервером.
+   */
+  api: Api
+
+  constructor (api: Api) {
     this.api = api
-    this.api.channelBus.on('nodeChannelUpdate', event => this.onNodeChannelUpdate(event))
+    this.api.channelBus.on('nodeChannelUpdate', event => this.onNodeChannelUpdate(<EventChannelUpdate><unknown>event))
   }
 
   /**
    * Обновить каналы для компонента.
    * Новые каналы подпишутся на сервере, старые отпишутся.
    * @param component - Компонент для которого обновляются каналы.
-   * @param {Array<СhannelsConfig>} channelsConfig - Каналы которые нужно подписать на обнавления.
+   * @param channelsConfig - Каналы которые нужно подписать на обнавления.
    */
-  updateWatchers (component, channelsConfig) {
+  updateWatchers (component: unknown, channelsConfig: Array<СhannelsConfig>) {
     console.log('updateWatchers', component, channelsConfig)
     const oldWatcherConfigs = this.localWatchers.get(component) || []
     this.localWatchers.set(component, channelsConfig)
     const watchersToAdd = []
     const watchersToDelete = []
-    for (let channelConfig of channelsConfig) {
+    for (const channelConfig of channelsConfig) {
       if (!oldWatcherConfigs.find(conf => conf.channelName === channelConfig.channelName)) {
         watchersToAdd.push(channelConfig)
       }
     }
-    for (let channelConfig of oldWatcherConfigs) {
+    for (const channelConfig of oldWatcherConfigs) {
       if (!channelsConfig.find(conf => conf.channelName === channelConfig.channelName)) {
         watchersToDelete.push(channelConfig)
       }
@@ -71,9 +86,9 @@ export default class ChannelBusManager {
 
   /**
    * Отправить данные в каналы.
-   * @param {Object<String, any>} channelsData - Каналы и данные которые нужно записать.
+   * @param channelsData - Каналы и данные которые нужно записать.
    */
-  setChannelsData (channelsData) {
+  setChannelsData (channelsData: Object) {
     this.api.channelBus.sendChannelsData(channelsData)
   }
 
@@ -81,7 +96,7 @@ export default class ChannelBusManager {
    * Отписать каналы компонента, от обновления.
    * @param component - Компонент для которого обновляются каналы.
    */
-  removeWatchers (component) {
+  removeWatchers (component: unknown) {
     console.log('removeWatchers', component)
     const oldWatcherConfigs = this.localWatchers.get(component)
     if (oldWatcherConfigs) {
@@ -93,16 +108,16 @@ export default class ChannelBusManager {
   /**
    * Подписать каналы на обновления.
    * Если канал впервые подписан, то он подписывается на сервере.
-   * @param {Array<СhannelsConfig>} channelsConfig - Каналы которые нужно подписать на обновления.
+   * @param channelsConfig - Каналы которые нужно подписать на обновления.
    */
-  createServerWatchers (channelsConfig) {
+  createServerWatchers (channelsConfig: Array<СhannelsConfig>) {
     const watchChannelNames = []
     for (let { channelName, onUpdate } of channelsConfig) {
       if (this.serverWatchers.has(channelName)) {
-        const watchers = this.serverWatchers.get(channelName)
+        const watchers = <Set<Function>>this.serverWatchers.get(channelName)
         watchers.add(onUpdate)
       } else {
-        const watchers = new Set()
+        const watchers = new Set<Function>()
         watchers.add(onUpdate)
         this.serverWatchers.set(channelName, watchers)
         watchChannelNames.push(channelName)
@@ -117,9 +132,9 @@ export default class ChannelBusManager {
   /**
    * Отписать каналы от обновления.
    * Если число надсмотрщиков над каналом будет равно 0, то канал отписывается от сервера.
-   * @param {Array<СhannelsConfig>} channelsConfig - Каналы которые нужно отписать от обновления.
+   * @param channelsConfig - Каналы которые нужно отписать от обновления.
    */
-  removeServerWatchers (channelsConfig) {
+  removeServerWatchers (channelsConfig: Array<СhannelsConfig>) {
     const unwatchChannelNames = []
     for (let { channelName, onUpdate } of channelsConfig) {
       const watchers = this.serverWatchers.get(channelName)
@@ -143,7 +158,7 @@ export default class ChannelBusManager {
    * Событие, обновления данных в канале.
    * @param {Object} params - В.
    */
-  onNodeChannelUpdate ({ params: { id, data } }) {
+  onNodeChannelUpdate ({ params: { id, data } }: EventChannelUpdate) {
     const watchers = this.serverWatchers.get(id)
     if (!watchers) {
       console.log(`onNodeChannelUpdate(${this.data})`)

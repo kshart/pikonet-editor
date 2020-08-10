@@ -29,10 +29,10 @@ import LoadingScreen from './LoadingScreen'
 /**
  * @description Редактор схем. Основной компонент редактора.
  * @module editor/Editor
- * @vue-computed {String} nodeConfigureComponent - Имя компонента, редактора параметров нод.
- * @vue-computed {String} nodeIdToConfigure - ID ноды для редактирования параметров.
+ * @vue-computed {string} nodeConfigureComponent - Имя компонента, редактора параметров нод.
+ * @vue-computed {string} nodeIdToConfigure - ID ноды для редактирования параметров.
  * @vue-computed {Array<api/models/Node>} nodes - Список всех доступных нод.
- * @vue-computed {Boolean} isConnected - Наличие соединения с API.
+ * @vue-computed {boolean} isConnected - Наличие соединения с API.
  */
 export default {
   name: 'Editor',

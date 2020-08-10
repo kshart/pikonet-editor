@@ -1,6 +1,8 @@
 import api from '@/api/index'
+import Node from '@/api/models/Node'
 import items from '@/nodes/index'
 import documentLinks from './documentLinks'
+import { GetterTree, MutationTree, ActionTree } from 'vuex'
 
 const types = {
   // LOAD: 'LOAD',
@@ -16,45 +18,35 @@ const types = {
   UPDATE_CONNECTION_STATE: 'UPDATE_CONNECTION_STATE'
 }
 
-const state = {
+class State {
   /**
    * Состояние соединения с API.
-   * @type {Boolean}
    */
-  isConnected: false,
+  isConnected = false;
 
   /**
    * Колличество попыток соединения с API. Если 0 то соединение установленно.
-   * @type {Number}
    */
-  loadingRetryCount: 0,
+  loadingRetryCount = 0
 
   /**
    * Конфигурации нод.
-   * @type {Array<module:api/models.Node>}
    */
-  nodeConfigs: [],
+  nodeConfigs: Array<Node> = []
 
   /**
    * ID нод которые необходимо обновить.
-   * @type {Array<String>}
    */
-  isUpdateIds: [],
+  isUpdateIds: Array<string> = []
 
   /**
    * ID ноды для редактирования параметров.
-   * @type {String}
    */
-  nodeIdToConfigure: null
+  nodeIdToConfigure: string | null = null
 }
 
 // let updateTimer = null
 
-/**
- * asd
- * @namespace
- * @memberof store/document
- */
 const actions = {
   /**
    * Инициализация модуля
@@ -66,35 +58,41 @@ const actions = {
     if (api.manager.connected) {
       api.manager.nodeGetList()
     }
-    api.manager.on('open', event => {
+    api.manager.on('open', () => {
       commit(types.UPDATE_RETRY_COUNT, { loadingRetryCount: 0 })
       commit(types.UPDATE_CONNECTION_STATE, { isConnected: true })
       api.manager.nodeGetList()
     })
-    api.manager.on('close', event => {
+    api.manager.on('close', () => {
       commit(types.UPDATE_CONNECTION_STATE, { isConnected: false })
     })
-    api.manager.on('tryConnect', event => {
+    api.manager.on('tryConnect', () => {
       commit(types.UPDATE_RETRY_COUNT, {
         loadingRetryCount: state.loadingRetryCount + 1
       })
     })
     api.manager.on('nodeList', event => {
-      commit(types.INIT_NODE_CONFIGS, event.params.nodes)
+      commit(types.INIT_NODE_CONFIGS, event.detail.params.nodes)
     })
     api.manager.on('nodeCreated', event => {
-      commit(types.APPEND_NODE_CONFIG, event.params.node)
+      commit(types.APPEND_NODE_CONFIG, event.detail.params.node)
     })
     api.manager.on('nodeUpdated', event => {
-      console.log('NODE_UPDATED TODO: сделать')
+      console.log('NODE_UPDATED TODO: сделать', event)
       // commit(types.UPDATE_NODE_CONFIG, event.params.nodeIds)
     })
     api.manager.on('nodeDeleted', event => {
-      commit(types.REMOVE_NODE_CONFIG, event.params.id)
+      commit(types.REMOVE_NODE_CONFIG, event.detail.params.id)
     })
     /* updateTimer = */ setInterval(() => {
       if (api.manager.connected && state.isUpdateIds.length > 0) {
-        const nodes = state.isUpdateIds.map(id => state.nodeConfigs.find(conf => conf.id === id))
+        const nodes = []
+        for (const id of state.isUpdateIds) {
+          const node = state.nodeConfigs.find(conf => conf.id === id)
+          if (node) {
+            nodes.push(node)
+          }
+        }
         api.manager.nodeUpdate(nodes)
         commit(types.FLUSH_UPDATED_NODES)
       }
@@ -113,7 +111,7 @@ const actions = {
     }
     const rawNodeConfigs = JSON.parse(stringRawNodeConfigs)
     const nodeConfigs = []
-    for (let nodeConfig of rawNodeConfigs) {
+    for (const nodeConfig of rawNodeConfigs) {
       if (!items[nodeConfig.type]) {
         console.error('unsupportConfig', nodeConfig)
         continue
@@ -127,10 +125,10 @@ const actions = {
   /**
    * Создать новую ноду
    *
-   * @param {object} context
-   * @param {calcNet.config.Node} nodeConfig конфиг
+   * @param context
+   * @param nodeConfig конфиг
    */
-  appendNodeConfig ({ commit }, node) {
+  appendNodeConfig (context, node: Node) {
     api.manager.nodeCreate(node)
   },
 
@@ -140,7 +138,7 @@ const actions = {
    * @param {object} context
    * @param {string} id      id ноды
    */
-  removeNodeConfig ({ commit }, id) {
+  removeNodeConfig (context, id: string) {
     console.log('removeNodeConfig')
     api.manager.nodeDelete(id)
   },
@@ -153,10 +151,10 @@ const actions = {
   updateNodeConfig ({ commit }, config) {
     commit(types.UPDATE_NODE_CONFIG, config)
   }
-}
+} as ActionTree<State, null>
 
 const getters = {
-}
+} as GetterTree<State, null>
 
 const mutations = {
   [types.INIT_NODE_CONFIGS] (state, nodeConfigs) {
@@ -196,7 +194,7 @@ const mutations = {
   [types.UPDATE_CONNECTION_STATE] (state, { isConnected }) {
     state.isConnected = isConnected
   }
-}
+} as MutationTree<State>
 
 /**
  * @namespace store/document
@@ -209,5 +207,5 @@ export default {
   mutations,
   getters,
   actions,
-  state
+  state: new State()
 }

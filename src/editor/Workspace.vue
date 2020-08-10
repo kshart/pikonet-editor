@@ -32,11 +32,11 @@
  * @desc Рабочее пространство. Компонент предназначен масштабирования и скролинга документа.
  * @module editor/Workspace
  * @vue-prop {Object} rect - Размеры рабочей области.
- * @vue-data {Boolean} mouseOver - true если курсор находится над рабочей областью.
- * @vue-data {Boolean} showGrid - true если необходимо отображать сетку.
+ * @vue-data {boolean} mouseOver - true если курсор находится над рабочей областью.
+ * @vue-data {boolean} showGrid - true если необходимо отображать сетку.
  * @vue-data {Point} offset - Отступ от курсора до документа. null если drag and drop не активен.
- * @vue-data {Number} zoom - Уровень зума. Не работает.
- * @vue-data {Number} aspectRatio - Соотношение ширины к высоте документа.
+ * @vue-data {number} zoom - Уровень зума. Не работает.
+ * @vue-data {number} aspectRatio - Соотношение ширины к высоте документа.
  * @vue-data {Point} position - Текущая позиция документа.
  * @vue-computed {Object} documentStyle - Стиль для документа.
  * @vue-computed {Object} grid - Сетка. Просто сетка.

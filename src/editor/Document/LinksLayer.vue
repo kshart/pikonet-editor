@@ -45,7 +45,7 @@ const getPointFromLinkName = (linkName, self) => {
  * Растояние между 2 точками.
  * @param a {Point} - Точка 1.
  * @param b {Point} - Точка 2.
- * @return {Number} - Растояние между точками.
+ * @return {number} - Растояние между точками.
  */
 const rangeBetweenPoints = (a, b) => {
   return Math.pow(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2), 1 / 2)
@@ -56,7 +56,7 @@ const rangeBetweenPoints = (a, b) => {
  * @param point {Point} - Точка 1.
  * @param lineA {Point} - Точка 2.
  * @param lineB {Point} - Точка 2.
- * @return {Number} - Растояние между точками.
+ * @return {number} - Растояние между точками.
  */
 const rangeBetweenPointAndLine = (point, lineA, lineB) => {
   let dx = lineB.x - lineA.x
@@ -138,7 +138,7 @@ export default {
       ) {
         return false
       }
-      for (let link of this.links) {
+      for (const link of this.links) {
         const fromPoint = getPointFromLinkName(link.from, this)
         const toPoint = getPointFromLinkName(link.to, this)
         if (!fromPoint || !toPoint) {
@@ -182,7 +182,7 @@ export default {
       this.context.strokeStyle = this.arrowColor
       this.context.lineWidth = 2.5
       this.context.lineCap = 'round'
-      for (let link of this.links) {
+      for (const link of this.links) {
         const fromPoint = getPointFromLinkName(link.from, this)
         const toPoint = getPointFromLinkName(link.to, this)
         if (!fromPoint || !toPoint) {

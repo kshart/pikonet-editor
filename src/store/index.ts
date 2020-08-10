@@ -16,5 +16,8 @@ store.dispatch('document/init')
 // store.dispatch('document/loadFromStorage')
 // store.dispatch('document/startAutoSaveNodeConfigs')
 
+declare global {
+  interface Window { store: any; }
+}
 window.store = store
 export default store

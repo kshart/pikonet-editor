@@ -1,33 +1,47 @@
+interface ResponseCallback {
+  resolve: Function;
+  reject: Function;
+}
+
+export interface SocketEventData {
+  id: number;
+  params: any;
+  requestId: number;
+}
+
+export interface SocketEventListener {
+  (evt: CustomEvent<SocketEventData>): void;
+}
+
+interface SocketMessage {
+  id: number;
+  requestId: number;
+  method: string;
+  params: any;
+}
+
 /**
  * Соединение с API.
  * @author Артём Каширин <kshart@yandex.ru>
- * @memberof api
- * @extends EventTarget
  */
 export default class WebSocketConnection extends EventTarget {
+  /**
+   * Путь к API.
+   */
+  url: string
+
+  /**
+   * Сокет.
+   */
+  private wSocket: WebSocket | null = null
+
+  requestWaitResponce = new Map<number, Set<ResponseCallback>>()
+
+  lastResposeId = 0
+
   constructor ({ url = 'ws://127.0.0.1:1069' }) {
     super()
-
-    /**
-     * Путь к API.
-     * @type {!String}
-     */
     this.url = url
-
-    /**
-     * Сокет.
-     * @type {WebSocket} socket
-     * @private
-     */
-    this.wSocket = null
-
-    /**
-     * @type {Map<String, Set<Function>>} socket
-     */
-    this.requestWaitResponce = new Map()
-
-    this.lastResposeId = 0
-
     this.open()
   }
 
@@ -50,15 +64,18 @@ export default class WebSocketConnection extends EventTarget {
       setTimeout(() => this.open(), 5000)
     })
     this.wSocket.addEventListener('message', event => {
-      const { id, requestId, method, params } = JSON.parse(event.data)
-      const eventData = new Event(method, params)
-      eventData.id = id
-      eventData.params = params
-      eventData.requestId = requestId
+      const { id, requestId, method, params } = <SocketMessage>JSON.parse(event.data)
+      const eventData = new CustomEvent<SocketEventData>(method, {
+        detail: {
+          id,
+          params,
+          requestId
+        }
+      })
       this.dispatchEvent(eventData)
 
       if (this.requestWaitResponce.has(requestId)) {
-        const callbacks = this.requestWaitResponce.get(requestId)
+        const callbacks = <Set<ResponseCallback>>this.requestWaitResponce.get(requestId)
         for (let { resolve } of callbacks) {
           resolve(params)
         }
@@ -70,24 +87,22 @@ export default class WebSocketConnection extends EventTarget {
 
   /**
    * Отправить пакет
-   * @param {String} method - Тип пакета.
-   * @param {Object} params - "полезная нагрузка", зависит от типа пакета.
+   * @param method - Тип пакета.
+   * @param params - "полезная нагрузка", зависит от типа пакета.
    * @param {Object} config - Параметры запроса.
-   * @param {Boolean} config.waitResult - Необходимость ожидать ответ на запрос.
-   * @access package
+   * @param {boolean} config.waitResult - Необходимость ожидать ответ на запрос.
    */
-  send (method, params = null, config) {
-    if (!this.connected) {
+  send (method: string, params: Object | null = null, config: any | null = null) {
+    if (this.wSocket == null || !this.connected) {
       console.warn('API: Соединение отсутствует')
       return false
     }
     const id = ++this.lastResposeId
-    if (config && config.waitResult) {
-      let callbacks
+    if (config?.waitResult) {
+      let callbacks = new Set<ResponseCallback>()
       if (this.requestWaitResponce.has(id)) {
-        callbacks = this.requestWaitResponce.get(id)
+        callbacks = <Set<ResponseCallback>>this.requestWaitResponce.get(id)
       } else {
-        callbacks = new Set()
         this.requestWaitResponce.set(id, callbacks)
       }
       const result = new Promise((resolve, reject) => {

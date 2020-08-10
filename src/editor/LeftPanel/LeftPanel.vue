@@ -14,7 +14,7 @@
 import items from '@/nodes/index'
 
 const components = {}
-for (let key in items) {
+for (const key in items) {
   const item = items[key]
   components[key + 'MenuItem'] = item.menuItem
 }

@@ -19,7 +19,7 @@ import ChannelBusComponent from '@/channelBus/ChannelBusComponent'
 /**
  * @description Нода для статического числа.
  *
- * @vue-prop {Number} initialCounter - Initial counter's value
+ * @vue-prop {number} initialCounter - Initial counter's value
  * @vue-prop {StaticValueNode} nodeConfig конфигурация ноды
  */
 export default {
