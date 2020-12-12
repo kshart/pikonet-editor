@@ -7,45 +7,52 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { mapActions } from 'vuex'
-export default {
-  name: 'Link',
-  props: ['id'],
-  mounted () {
-    this.mountLinkPoint({
-      id: this.id,
-      $vue: this
-    })
-  },
-  beforeDestroy () {
-    window.removeEventListener('mouseup', this.abortLinking)
-    this.dismountLinkPoint({
-      id: this.id,
-      $vue: this
-    })
-  },
+import { Component, Vue, Prop } from 'vue-property-decorator'
+
+@Component({
   methods: {
-    startLinking () {
-      window.addEventListener('mouseup', this.abortLinking)
-      this.beginCreateLink({
-        from: this.id
-      })
-    },
-    abortLinking () {
-      this.endCreateLink()
-    },
-    stopLinking () {
-      this.endCreateLink({
-        to: this.id
-      })
-    },
     ...mapActions('document/links', [
       'mountLinkPoint',
       'dismountLinkPoint',
       'beginCreateLink',
       'endCreateLink'
     ])
+  }
+})
+export default class Link extends Vue {
+  @Prop(String) readonly id!: string
+  mounted () {
+    this.mountLinkPoint({
+      id: this.id,
+      $vue: this
+    })
+  }
+
+  beforeDestroy () {
+    window.removeEventListener('mouseup', this.abortLinking)
+    this.dismountLinkPoint({
+      id: this.id,
+      $vue: this
+    })
+  }
+
+  startLinking () {
+    window.addEventListener('mouseup', this.abortLinking)
+    this.beginCreateLink({
+      from: this.id
+    })
+  }
+
+  abortLinking () {
+    this.endCreateLink()
+  }
+
+  stopLinking () {
+    this.endCreateLink({
+      to: this.id
+    })
   }
 }
 </script>

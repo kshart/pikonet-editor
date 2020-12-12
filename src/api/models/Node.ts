@@ -1,8 +1,4 @@
-
-interface Point {
-  x: 0;
-  y: 0;
-}
+import Point from '@/editor/Point'
 
 /**
  * Класс для хранения настроек ноды.

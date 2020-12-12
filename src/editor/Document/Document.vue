@@ -17,12 +17,13 @@
       >
       </component>
     </div>
-    <LinksLayer class="links-layer" :bbox="bbox" />
+    <LinksLayer v-if="bbox" class="links-layer" :bbox="bbox" />
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex'
+import BBox from '@/editor/BBox'
 import items from '@/nodes/index'
 import LinksLayer from './LinksLayer'
 
@@ -50,12 +51,7 @@ export default {
        * @member {?Point}
        */
       offset: null,
-      bbox: {
-        x: null,
-        y: null,
-        width: null,
-        height: null
-      }
+      bbox: null
     }
   },
   computed: {

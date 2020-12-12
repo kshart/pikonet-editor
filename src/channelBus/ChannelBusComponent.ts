@@ -33,14 +33,15 @@ interface ChannelsData {
 const createChannelNameFromConfig = (conf: ChannelConfig) => conf.nodeId + '/' + conf.channelName
 
 /**
- * @description Примеси для упрощения работы с данными из каналов
- *
- * @vue-computed {} channelsConfig - Конфигурация каналов.
+ * Примеси для упрощения работы с данными из каналов
  */
 @Mixin
-export default class MyMixin extends Vue {
+export default class ChannelBusMixin extends Vue {
   channels = <ChannelsData>{}
 
+  /**
+   * Конфигурация каналов.
+   */
   get channelsConfig (): Array<ChannelConfig> {
     return []
   }

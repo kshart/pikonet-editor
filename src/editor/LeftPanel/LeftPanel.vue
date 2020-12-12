@@ -10,24 +10,22 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import items from '@/nodes/index'
+import { Component, Vue } from 'vue-property-decorator'
 
-const components = {}
+const components = {} as Record<string, typeof Vue>
 for (const key in items) {
   const item = items[key]
   components[key + 'MenuItem'] = item.menuItem
 }
 
-export default {
-  name: 'LeftPanel',
-  components,
-  data () {
-    return {
-      items,
-      showNodeTypes: true
-    }
-  }
+@Component({
+  components
+})
+export default class LeftPanel extends Vue {
+  private items = items
+  private showNodeTypes = true
 }
 </script>
 

@@ -15,68 +15,72 @@
   </div>
 </template>
 
-<script>
-import { mapState, mapMutations } from 'vuex';
-import ChannelBusComponent from '@/channelBus/ChannelBusComponent';
+<script lang="ts">
+import { mapState, mapMutations } from 'vuex'
+import { channelBusAPI } from '@/api/index'
+import Node from '@/api/models/Node'
+import ChannelBusComponent from '@/channelBus/ChannelBusComponent'
+import { Component, Mixins } from 'vue-property-decorator'
 
 /**
  * @module StaticValueNode-ConfigPanel
  * @description Панель для настройки ноды StaticValueNode
  *
- * @vue-computed {Array<api.models.Channel>} value - Конфигурация каналов.
  * @vue-data {Object} nodeParams - Каналы ноды.
  * @vue-data {Object} nodeParams.nodeId - ID ноды.
  * @vue-data {Object} nodeParams.channels - Каналы ноды.
  */
-export default {
-  name: 'StaticValueNode-ConfigPanel',
-  mixins: [ChannelBusComponent],
-  data() {
-    return {
-      nodeParams: null,
-    };
+@Component({
+  methods: {
+    ...mapMutations('document', {
+      updateNodeConfig: 'UPDATE_NODE_CONFIG'
+    })
   },
   computed: {
-    value: {
-      get() {
-        return this.node.value;
-      },
-      set(value) {
-        if (!this.node) {
-          return;
-        }
-        this.UPDATE_NODE_CONFIG({
-          id: this.node.id,
-          callback: (nodeConfig) => {
-            this.$set(nodeConfig, 'value', value);
-          },
-        });
-      },
-    },
-    channelsConfig() {
-      if (!this.nodeParams) {
-        return [];
-      }
-      return this.nodeParams.channels.map(({ name, id }) => ({
-        propName: name,
-        nodeId: this.nodeParams.nodeId,
-        channelName: name,
-      }));
-    },
     ...mapState('document', {
-      node: (state) => state.nodeConfigs.find((node) => node.id === state.nodeIdToConfigure),
-    }),
-  },
-  mounted() {
-    this.$api.channelBus.getChannelList(this.node.id)
+      node: state => state.nodeConfigs.find(node => node.id === state.nodeIdToConfigure)
+    })
+  }
+})
+export default class StaticValueNodeConfigPanel extends Mixins(ChannelBusComponent) {
+  node!: Node
+  nodeParams: Node | null = null
+  updateNodeConfig!: (payload: any) => void
+
+  get value () {
+    return null // this.node.value
+  }
+
+  set value (value) {
+    if (!this.node) {
+      return
+    }
+    this.updateNodeConfig({
+      id: this.node.id,
+      callback: (nodeConfig) => {
+        this.$set(nodeConfig, 'value', value)
+      }
+    })
+  }
+
+  get channelsConfig () {
+    if (!this.nodeParams) {
+      return []
+    }
+    return this.nodeParams.channels.map(({ name, id }) => ({
+      propName: name,
+      nodeId: this.nodeParams.nodeId,
+      channelName: name
+    }))
+  }
+
+  mounted () {
+    channelBusAPI.getChannelList(this.node.id)
       .then((nodeParams) => {
-        this.nodeParams = nodeParams;
-      });
-  },
-  methods: {
-    ...mapMutations('document', ['UPDATE_NODE_CONFIG']),
-  },
-};
+        this.nodeParams = nodeParams
+      })
+  }
+}
 </script>
 
 <style scoped>

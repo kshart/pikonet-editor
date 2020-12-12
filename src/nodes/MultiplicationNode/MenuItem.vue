@@ -4,23 +4,26 @@
   </div>
 </template>
 
-<script>
-import { mapActions } from 'vuex'
+<script lang="ts">
+import Node from '@/api/models/Node'
 import MultiplicationNode from './MultiplicationNode'
+import { mapActions } from 'vuex'
+import { Component, Vue } from 'vue-property-decorator'
 
-export default {
-  name: 'MultiplicationNode-MenuItem',
-  methods: {
-    appendNodeConfig () {
-      const nodeConfig = new MultiplicationNode({
-        title: 'MultiplicationNode'
-      })
-      this.documentAppendNodeConfig(nodeConfig)
-    },
-    ...mapActions({
-      documentAppendNodeConfig: 'document/appendNodeConfig'
+@Component({
+  methods: mapActions({
+    documentAppendNodeConfig: 'document/appendNodeConfig'
+  })
+})
+export default class MultiplicationNodeMenuItem extends Vue {
+  appendNodeConfig () {
+    const nodeConfig = new MultiplicationNode({
+      title: 'MultiplicationNode'
     })
+    this.documentAppendNodeConfig(nodeConfig)
   }
+
+  documentAppendNodeConfig!: (node: Node) => void
 }
 </script>
 

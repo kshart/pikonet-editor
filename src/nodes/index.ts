@@ -1,11 +1,12 @@
 import Node from '@/api/models/Node'
 import StaticValueNode from './StaticValueNode/index'
 import MultiplicationNode from './MultiplicationNode/index'
+import Vue from 'vue'
 
 export interface NodeModule {
-  shape: any;
-  menuItem: any;
-  configPanel: any;
+  shape: typeof Vue;
+  menuItem: typeof Vue;
+  configPanel: typeof Vue;
   class: typeof Node;
 }
 

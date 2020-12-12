@@ -4,22 +4,24 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { mapActions } from 'vuex'
 import StaticValueNode from './StaticValueNode'
+import { Component, Vue } from 'vue-property-decorator'
 
-export default {
-  name: 'StaticValueNode-MenuItem',
+@Component({
   methods: {
-    appendNodeConfig () {
-      const nodeConfig = new StaticValueNode({
-        title: 'StaticValueNode'
-      })
-      this.documentAppendNodeConfig(nodeConfig)
-    },
     ...mapActions({
       documentAppendNodeConfig: 'document/appendNodeConfig'
     })
+  }
+})
+export default class StaticValueNodeMenuItem extends Vue {
+  appendNodeConfig () {
+    // const nodeConfig = new StaticValueNode({
+    //   title: 'StaticValueNode'
+    // })
+    // this.documentAppendNodeConfig(nodeConfig)
   }
 }
 </script>

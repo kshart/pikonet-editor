@@ -17,21 +17,24 @@
   </BaseShape>
 </template>
 
-<script>
+<script lang="ts">
 import Link from '@/editor/Document/Link'
 import BaseShape from '@/editor/BaseShape'
+import MultiplicationNode from './MultiplicationNode'
+import { Component, Prop, Vue } from 'vue-property-decorator'
 
 /**
  * Нода для умножения.
  * @vue-prop {MultiplicationNode} nodeConfig конфигурация ноды
  */
-export default {
-  name: 'MultiplicationNode-Shape',
+@Component({
   components: {
     Link,
     BaseShape
-  },
-  props: ['nodeConfig']
+  }
+})
+export default class MultiplicationNodeShape extends Vue {
+  @Prop(MultiplicationNode) readonly nodeConfig!: MultiplicationNode
 }
 </script>
 

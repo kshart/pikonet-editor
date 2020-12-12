@@ -1,4 +1,4 @@
-import api from '@/api/index'
+import { managerAPI } from '@/api/index'
 import Node from '@/api/models/Node'
 import items from '@/nodes/index'
 import documentLinks from './documentLinks'
@@ -55,37 +55,37 @@ const actions = {
    */
   init ({ state, commit, dispatch }) {
     dispatch('links/init')
-    if (api.manager.connected) {
-      api.manager.nodeGetList()
+    if (managerAPI.connected) {
+      managerAPI.nodeGetList()
     }
-    api.manager.on('open', () => {
+    managerAPI.on('open', () => {
       commit(types.UPDATE_RETRY_COUNT, { loadingRetryCount: 0 })
       commit(types.UPDATE_CONNECTION_STATE, { isConnected: true })
-      api.manager.nodeGetList()
+      managerAPI.nodeGetList()
     })
-    api.manager.on('close', () => {
+    managerAPI.on('close', () => {
       commit(types.UPDATE_CONNECTION_STATE, { isConnected: false })
     })
-    api.manager.on('tryConnect', () => {
+    managerAPI.on('tryConnect', () => {
       commit(types.UPDATE_RETRY_COUNT, {
         loadingRetryCount: state.loadingRetryCount + 1
       })
     })
-    api.manager.on('nodeList', event => {
+    managerAPI.on('nodeList', event => {
       commit(types.INIT_NODE_CONFIGS, event.detail.params.nodes)
     })
-    api.manager.on('nodeCreated', event => {
+    managerAPI.on('nodeCreated', event => {
       commit(types.APPEND_NODE_CONFIG, event.detail.params.node)
     })
-    api.manager.on('nodeUpdated', event => {
+    managerAPI.on('nodeUpdated', event => {
       console.log('NODE_UPDATED TODO: сделать', event)
       // commit(types.UPDATE_NODE_CONFIG, event.params.nodeIds)
     })
-    api.manager.on('nodeDeleted', event => {
+    managerAPI.on('nodeDeleted', event => {
       commit(types.REMOVE_NODE_CONFIG, event.detail.params.id)
     })
     /* updateTimer = */ setInterval(() => {
-      if (api.manager.connected && state.isUpdateIds.length > 0) {
+      if (managerAPI.connected && state.isUpdateIds.length > 0) {
         const nodes = []
         for (const id of state.isUpdateIds) {
           const node = state.nodeConfigs.find(conf => conf.id === id)
@@ -93,7 +93,7 @@ const actions = {
             nodes.push(node)
           }
         }
-        api.manager.nodeUpdate(nodes)
+        managerAPI.nodeUpdate(nodes)
         commit(types.FLUSH_UPDATED_NODES)
       }
     }, 1000)
@@ -129,7 +129,7 @@ const actions = {
    * @param nodeConfig конфиг
    */
   appendNodeConfig (context, node: Node) {
-    api.manager.nodeCreate(node)
+    managerAPI.nodeCreate(node)
   },
 
   /**
@@ -140,7 +140,7 @@ const actions = {
    */
   removeNodeConfig (context, id: string) {
     console.log('removeNodeConfig')
-    api.manager.nodeDelete(id)
+    managerAPI.nodeDelete(id)
   },
 
   /**

@@ -1,4 +1,4 @@
-import api from '@/api/index'
+import { managerAPI } from '@/api/index'
 import Link from '@/api/models/Link'
 import { GetterTree, MutationTree, ActionTree } from 'vuex'
 
@@ -39,27 +39,27 @@ const actions = {
    * Инициализация модуля
    */
   init ({ state, commit }) {
-    if (api.manager.connected) {
-      api.manager.linkGetList()
+    if (managerAPI.connected) {
+      managerAPI.linkGetList()
     }
-    api.manager.on('open', () => api.manager.linkGetList())
-    api.manager.on('linkList', event => {
+    managerAPI.on('open', () => managerAPI.linkGetList())
+    managerAPI.on('linkList', event => {
       commit(types.INIT_LINK_CONFIGS, event.detail.params.links)
     })
-    api.manager.on('linkCreated', event => {
+    managerAPI.on('linkCreated', event => {
       commit(types.APPEND_LINK_CONFIG, event.detail.params.link)
     })
-    api.manager.on('linkUpdated', () => {
+    managerAPI.on('linkUpdated', () => {
       console.log('LINK_UPDATED TODO: сделать')
     })
-    api.manager.on('linkDeleted', event => {
+    managerAPI.on('linkDeleted', event => {
       commit(types.REMOVE_LINK_CONFIG, {
         from: event.detail.params.from,
         to: event.detail.params.to
       })
     })
     /* updateTimer = */ setInterval(() => {
-      if (api.manager.connected && state.isUpdateIds.length > 0) {
+      if (managerAPI.connected && state.isUpdateIds.length > 0) {
         const links = []
         for (const { from, to } of state.isUpdateIds) {
           const link = state.items.find(conf => conf.from === from && conf.to === to)
@@ -67,7 +67,7 @@ const actions = {
             links.push(link)
           }
         }
-        api.manager.linksCreate(links)
+        managerAPI.linksCreate(links)
         commit(types.FLUSH_UPDATED_LINKS)
       }
     }, 1000)
@@ -118,7 +118,7 @@ const actions = {
    * Удалить соединение
    */
   removeLinkConfig (context, link: Link) {
-    api.manager.linkDelete(link)
+    managerAPI.linkDelete(link)
   }
 } as ActionTree<State, null>
 

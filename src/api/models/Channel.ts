@@ -1,7 +1,6 @@
 /**
  * Класс для хранения настроек канала.
  * @author Артём Каширин <kshart@yandex.ru>
- * @memberof api.models
  */
 export default class Channel {
   /**
@@ -16,7 +15,6 @@ export default class Channel {
 
   /**
    * Доступность сигнала на запись
-   * @type {boolean}
    */
   writable: boolean
 

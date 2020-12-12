@@ -11,10 +11,13 @@
   </BaseShape>
 </template>
 
-<script>
-import Link from '@/editor/Document/Link'
-import BaseShape from '@/editor/BaseShape'
+<script lang="ts">
+import Link from '@/editor/Document/Link.vue'
+import BaseShape from '@/editor/BaseShape.vue'
 import ChannelBusComponent from '@/channelBus/ChannelBusComponent'
+import StaticValueNode from './StaticValueNode'
+import { override } from '@/decorators'
+import { Component, Prop, Mixins } from 'vue-property-decorator'
 
 /**
  * @description Нода для статического числа.
@@ -22,24 +25,31 @@ import ChannelBusComponent from '@/channelBus/ChannelBusComponent'
  * @vue-prop {number} initialCounter - Initial counter's value
  * @vue-prop {StaticValueNode} nodeConfig конфигурация ноды
  */
-export default {
-  name: 'StaticValueNodeShape',
+@Component({
   components: {
     Link,
     BaseShape
-  },
-  mixins: [ ChannelBusComponent ],
-  props: ['nodeConfig'],
-  computed: {
-    channelsConfig () {
-      return [
-        {
-          propName: 'value',
-          nodeId: this.nodeConfig.id,
-          channelName: 'value'
-        }
-      ]
-    }
+  }
+})
+export default class StaticValueNodeShape extends Mixins(ChannelBusComponent) {
+  /**
+   * Конфигурация ноды
+   */
+  @Prop({ required: true })
+  readonly nodeConfig!: StaticValueNode
+
+  /**
+   * @inheritdoc
+   */
+  @override
+  get channelsConfig () {
+    return [
+      {
+        propName: 'value',
+        nodeId: this.nodeConfig.id,
+        channelName: 'value'
+      }
+    ]
   }
 }
 </script>

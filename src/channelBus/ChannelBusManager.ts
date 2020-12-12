@@ -1,4 +1,4 @@
-import Api from '@/api/Api'
+import ChannelBusAPI from '@/api/ChannelBusAPI'
 
 /**
  * Класс для хранения настроек приема данных из ноды.
@@ -47,11 +47,13 @@ export default class ChannelBusManager {
   /**
    * Соединения с сервером.
    */
-  api: Api
+  channelBusAPI: ChannelBusAPI
 
-  constructor (api: Api) {
-    this.api = api
-    this.api.channelBus.on('nodeChannelUpdate', event => this.onNodeChannelUpdate(<EventChannelUpdate><unknown>event))
+  constructor (channelBusAPI: ChannelBusAPI) {
+    this.channelBusAPI = channelBusAPI
+    this.channelBusAPI.on('nodeChannelUpdate', event => {
+      this.onNodeChannelUpdate(event as unknown as EventChannelUpdate)
+    })
   }
 
   /**
@@ -88,8 +90,8 @@ export default class ChannelBusManager {
    * Отправить данные в каналы.
    * @param channelsData - Каналы и данные которые нужно записать.
    */
-  setChannelsData (channelsData: Object) {
-    this.api.channelBus.sendChannelsData(channelsData)
+  setChannelsData (channelsData: Record<string, any>) {
+    this.channelBusAPI.sendChannelsData(channelsData)
   }
 
   /**
@@ -112,9 +114,9 @@ export default class ChannelBusManager {
    */
   createServerWatchers (channelsConfig: Array<СhannelsConfig>) {
     const watchChannelNames = []
-    for (let { channelName, onUpdate } of channelsConfig) {
-      if (this.serverWatchers.has(channelName)) {
-        const watchers = <Set<Function>>this.serverWatchers.get(channelName)
+    for (const { channelName, onUpdate } of channelsConfig) {
+      const watchers = this.serverWatchers.get(channelName)
+      if (watchers) {
         watchers.add(onUpdate)
       } else {
         const watchers = new Set<Function>()
@@ -124,7 +126,7 @@ export default class ChannelBusManager {
       }
     }
     if (watchChannelNames.length > 0) {
-      this.api.channelBus.channelsWatch(watchChannelNames)
+      this.channelBusAPI.channelsWatch(watchChannelNames)
     }
     console.log('createServerWatchers', this)
   }
@@ -136,7 +138,7 @@ export default class ChannelBusManager {
    */
   removeServerWatchers (channelsConfig: Array<СhannelsConfig>) {
     const unwatchChannelNames = []
-    for (let { channelName, onUpdate } of channelsConfig) {
+    for (const { channelName, onUpdate } of channelsConfig) {
       const watchers = this.serverWatchers.get(channelName)
       if (!watchers) {
         console.error(`ChannelBusManager::removeServerWatchers Ошибка при удаленни канала ${channelName}`)
@@ -149,14 +151,14 @@ export default class ChannelBusManager {
       }
     }
     if (unwatchChannelNames.length > 0) {
-      this.api.channelBus.channelsUnwatch(unwatchChannelNames)
+      this.channelBusAPI.channelsUnwatch(unwatchChannelNames)
     }
     console.log('removeServerWatchers', this)
   }
 
   /**
    * Событие, обновления данных в канале.
-   * @param {Object} params - В.
+   * @param params - В.
    */
   onNodeChannelUpdate ({ params: { id, data } }: EventChannelUpdate) {
     const watchers = this.serverWatchers.get(id)
@@ -165,7 +167,7 @@ export default class ChannelBusManager {
       return
     }
     this.data.set(id, data)
-    for (let watcher of watchers) {
+    for (const watcher of watchers) {
       watcher(data)
     }
   }
